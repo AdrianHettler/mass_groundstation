@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using System.Threading;
 
 
 
@@ -16,10 +16,17 @@ namespace mass_groundstation
         /// </summary>
         [STAThread]
         static void Main()
-        {
+        {      
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+
+            MainForm main_form = new MainForm();
+         
+
+
+            Application.Run(main_form);
+     
+    
         }
     }
 }
