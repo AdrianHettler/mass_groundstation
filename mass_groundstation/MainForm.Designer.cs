@@ -30,6 +30,7 @@ namespace mass_groundstation
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.fontDialog1 = new System.Windows.Forms.FontDialog();
             this.StatusBar = new System.Windows.Forms.StatusStrip();
@@ -45,10 +46,10 @@ namespace mass_groundstation
             this.label_STATUS_UDP = new System.Windows.Forms.Label();
             this.label_STATUS_TCP = new System.Windows.Forms.Label();
             this.label_PING_TIME = new System.Windows.Forms.Label();
-            this.button_single_PING = new System.Windows.Forms.Button();
+            this.button_connection_refresh = new System.Windows.Forms.Button();
             this.label_sek = new System.Windows.Forms.Label();
             this.label_PING_REFRESH = new System.Windows.Forms.Label();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDown_ping_refresh = new System.Windows.Forms.NumericUpDown();
             this.numericUpDown_TCP_PORT = new System.Windows.Forms.NumericUpDown();
             this.numericUpDown_UDP_PORT = new System.Windows.Forms.NumericUpDown();
             this.label_PING = new System.Windows.Forms.Label();
@@ -59,10 +60,13 @@ namespace mass_groundstation
             this.label_UDP_PORT = new System.Windows.Forms.Label();
             this.label_GS_IP = new System.Windows.Forms.Label();
             this.label_EXP_IP = new System.Windows.Forms.Label();
+            this.timer_ping_refresh = new System.Windows.Forms.Timer(this.components);
+            this.label_last_connection_refresh = new System.Windows.Forms.Label();
+            this.label_connection_last_refresh_output = new System.Windows.Forms.Label();
             this.TabControl.SuspendLayout();
             this.Tab_Logs.SuspendLayout();
             this.Tab_Connection.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_ping_refresh)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_TCP_PORT)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_UDP_PORT)).BeginInit();
             this.SuspendLayout();
@@ -149,15 +153,17 @@ namespace mass_groundstation
             // 
             // Tab_Connection
             // 
+            this.Tab_Connection.Controls.Add(this.label_connection_last_refresh_output);
+            this.Tab_Connection.Controls.Add(this.label_last_connection_refresh);
             this.Tab_Connection.Controls.Add(this.label_UDP_STATUS_OUTPUT);
             this.Tab_Connection.Controls.Add(this.label_TCP_STATUS_OUTPUT);
             this.Tab_Connection.Controls.Add(this.label_STATUS_UDP);
             this.Tab_Connection.Controls.Add(this.label_STATUS_TCP);
             this.Tab_Connection.Controls.Add(this.label_PING_TIME);
-            this.Tab_Connection.Controls.Add(this.button_single_PING);
+            this.Tab_Connection.Controls.Add(this.button_connection_refresh);
             this.Tab_Connection.Controls.Add(this.label_sek);
             this.Tab_Connection.Controls.Add(this.label_PING_REFRESH);
-            this.Tab_Connection.Controls.Add(this.numericUpDown1);
+            this.Tab_Connection.Controls.Add(this.numericUpDown_ping_refresh);
             this.Tab_Connection.Controls.Add(this.numericUpDown_TCP_PORT);
             this.Tab_Connection.Controls.Add(this.numericUpDown_UDP_PORT);
             this.Tab_Connection.Controls.Add(this.label_PING);
@@ -234,20 +240,20 @@ namespace mass_groundstation
             this.label_PING_TIME.TabIndex = 20;
             this.label_PING_TIME.Text = "NOT CONNECTED";
             // 
-            // button_single_PING
+            // button_connection_refresh
             // 
-            this.button_single_PING.Location = new System.Drawing.Point(179, 249);
-            this.button_single_PING.Name = "button_single_PING";
-            this.button_single_PING.Size = new System.Drawing.Size(100, 23);
-            this.button_single_PING.TabIndex = 18;
-            this.button_single_PING.Text = "Single PING";
-            this.button_single_PING.UseVisualStyleBackColor = true;
-            this.button_single_PING.Click += new System.EventHandler(this.button_single_PING_Click);
+            this.button_connection_refresh.Location = new System.Drawing.Point(179, 280);
+            this.button_connection_refresh.Name = "button_connection_refresh";
+            this.button_connection_refresh.Size = new System.Drawing.Size(100, 23);
+            this.button_connection_refresh.TabIndex = 18;
+            this.button_connection_refresh.Text = "Refresh";
+            this.button_connection_refresh.UseVisualStyleBackColor = true;
+            this.button_connection_refresh.Click += new System.EventHandler(this.button_single_PING_Click);
             // 
             // label_sek
             // 
             this.label_sek.AutoSize = true;
-            this.label_sek.Location = new System.Drawing.Point(285, 229);
+            this.label_sek.Location = new System.Drawing.Point(285, 257);
             this.label_sek.Name = "label_sek";
             this.label_sek.Size = new System.Drawing.Size(38, 13);
             this.label_sek.TabIndex = 17;
@@ -258,23 +264,34 @@ namespace mass_groundstation
             this.label_PING_REFRESH.AutoSize = true;
             this.label_PING_REFRESH.BackColor = System.Drawing.Color.Transparent;
             this.label_PING_REFRESH.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_PING_REFRESH.Location = new System.Drawing.Point(32, 227);
+            this.label_PING_REFRESH.Location = new System.Drawing.Point(32, 254);
             this.label_PING_REFRESH.Name = "label_PING_REFRESH";
             this.label_PING_REFRESH.Size = new System.Drawing.Size(99, 16);
             this.label_PING_REFRESH.TabIndex = 16;
             this.label_PING_REFRESH.Text = "Refresh Rate";
             // 
-            // numericUpDown1
+            // numericUpDown_ping_refresh
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(179, 223);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(100, 20);
-            this.numericUpDown1.TabIndex = 15;
-            this.numericUpDown1.Value = new decimal(new int[] {
+            this.numericUpDown_ping_refresh.Location = new System.Drawing.Point(179, 254);
+            this.numericUpDown_ping_refresh.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numericUpDown_ping_refresh.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDown_ping_refresh.Name = "numericUpDown_ping_refresh";
+            this.numericUpDown_ping_refresh.Size = new System.Drawing.Size(100, 20);
+            this.numericUpDown_ping_refresh.TabIndex = 15;
+            this.numericUpDown_ping_refresh.Value = new decimal(new int[] {
             60,
             0,
             0,
             0});
+            this.numericUpDown_ping_refresh.ValueChanged += new System.EventHandler(this.numericUpDown_ping_refresh_ValueChanged);
             // 
             // numericUpDown_TCP_PORT
             // 
@@ -388,6 +405,34 @@ namespace mass_groundstation
             this.label_EXP_IP.TabIndex = 0;
             this.label_EXP_IP.Text = "Experiment IP";
             // 
+            // timer_ping_refresh
+            // 
+            this.timer_ping_refresh.Enabled = true;
+            this.timer_ping_refresh.Interval = 60000;
+            this.timer_ping_refresh.Tick += new System.EventHandler(this.timer_ping_refresh_Tick);
+            // 
+            // label_last_connection_refresh
+            // 
+            this.label_last_connection_refresh.AutoSize = true;
+            this.label_last_connection_refresh.BackColor = System.Drawing.Color.Transparent;
+            this.label_last_connection_refresh.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_last_connection_refresh.Location = new System.Drawing.Point(32, 217);
+            this.label_last_connection_refresh.Name = "label_last_connection_refresh";
+            this.label_last_connection_refresh.Size = new System.Drawing.Size(95, 16);
+            this.label_last_connection_refresh.TabIndex = 26;
+            this.label_last_connection_refresh.Text = "Last Refresh";
+            // 
+            // label_connection_last_refresh_output
+            // 
+            this.label_connection_last_refresh_output.AutoSize = true;
+            this.label_connection_last_refresh_output.BackColor = System.Drawing.Color.Transparent;
+            this.label_connection_last_refresh_output.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_connection_last_refresh_output.Location = new System.Drawing.Point(176, 218);
+            this.label_connection_last_refresh_output.Name = "label_connection_last_refresh_output";
+            this.label_connection_last_refresh_output.Size = new System.Drawing.Size(53, 15);
+            this.label_connection_last_refresh_output.TabIndex = 27;
+            this.label_connection_last_refresh_output.Text = "NEVER";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -406,7 +451,7 @@ namespace mass_groundstation
             this.Tab_Logs.PerformLayout();
             this.Tab_Connection.ResumeLayout(false);
             this.Tab_Connection.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_ping_refresh)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_TCP_PORT)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_UDP_PORT)).EndInit();
             this.ResumeLayout(false);
@@ -433,10 +478,10 @@ namespace mass_groundstation
         private System.Windows.Forms.Label label_TCP_PORT;
         private System.Windows.Forms.CheckBox checkBox_lock_IP_config;
         private System.Windows.Forms.Label label_PING;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.NumericUpDown numericUpDown_ping_refresh;
         private System.Windows.Forms.NumericUpDown numericUpDown_TCP_PORT;
         private System.Windows.Forms.NumericUpDown numericUpDown_UDP_PORT;
-        private System.Windows.Forms.Button button_single_PING;
+        private System.Windows.Forms.Button button_connection_refresh;
         private System.Windows.Forms.Label label_sek;
         private System.Windows.Forms.Label label_PING_REFRESH;
         private System.Windows.Forms.Label label_PING_TIME;
@@ -444,6 +489,9 @@ namespace mass_groundstation
         private System.Windows.Forms.Label label_TCP_STATUS_OUTPUT;
         private System.Windows.Forms.Label label_STATUS_UDP;
         private System.Windows.Forms.Label label_STATUS_TCP;
+        private System.Windows.Forms.Timer timer_ping_refresh;
+        private System.Windows.Forms.Label label_last_connection_refresh;
+        private System.Windows.Forms.Label label_connection_last_refresh_output;
     }
 }
 

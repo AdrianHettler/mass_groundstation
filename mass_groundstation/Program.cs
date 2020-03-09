@@ -21,12 +21,7 @@ namespace mass_groundstation
             Application.SetCompatibleTextRenderingDefault(false);
 
             MainForm main_form = new MainForm();
-         
-
-
-            Application.Run(main_form);
-     
-    
+            Application.Run(main_form);       
         }
     }
 }

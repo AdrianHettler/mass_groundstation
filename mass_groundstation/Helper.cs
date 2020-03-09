@@ -11,7 +11,23 @@ namespace mass_groundstation
 {
     public static class Helper
     {
-        public static TcpClient tcp_client;
+        
+
+        enum tcp_message_id : byte
+        {
+            empty,
+            status_ok,
+            ping,
+            pong,
+            error = 254
+        }
+
+
+        public static byte[] message_ping = { (byte)tcp_message_id.ping, 2 };
+
+
+        private static TcpClient tcp_client;
+        private static NetworkStream tcp_stream;
 
         public static string get_local_ip()
         {
@@ -32,29 +48,62 @@ namespace mass_groundstation
 
             return r;
 
+
             //if (r.Status == IPStatus.Success)
             //{
             //   // lblpingstatus.Text = "Ping to " + s.ToString() + "[" + r.Address.ToString() + "] successful - " + r.Buffer.Length.ToString() + " bytes in " + r.RoundtripTime.ToString() + " ms." + "\n";
             //}
         }
 
-        public static NetworkStream init_tcp_client(string exp_ip,int tcp_port)
+        public static bool init_tcp_client(string exp_ip,int tcp_port)
         {
-             tcp_client = new TcpClient(exp_ip, (int)tcp_port);
-             return tcp_client.GetStream();
+            tcp_client = new TcpClient();
+            var result = tcp_client.BeginConnect(exp_ip, (int)tcp_port, null, null);
+            var success = result.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(1));
+
+            if (!success)
+            {
+                return false;
+            }
+
+            tcp_stream = tcp_client.GetStream();
+            tcp_stream.ReadTimeout = 1000;
+            tcp_stream.WriteTimeout = 1000;
+
+            return true;
         }
 
         public static TcpClient get_tcp_client()
         {
             return tcp_client;
         }
-            
+
+        public static NetworkStream get_tcp_netstream()
+        {
+            return tcp_stream;
+        }
+
         public static void close_tcp_client()
         {
             tcp_client.Close();
         }
 
+        public static bool send_initial_tcp_payload()
+        {
+            byte[] message_ping_payload = { 0xFF, 0xFF, 0xFF, 0xFF };
 
+            if (tcp_stream.CanWrite)
+            {
+                tcp_stream.Write(message_ping_payload, 0, message_ping_payload.Length);
 
+                if (tcp_stream.CanRead)
+                {
+                    byte[] message_ping_payload_receive = new byte[tcp_client.ReceiveBufferSize];
+                    tcp_stream.Read(message_ping_payload_receive, 0, tcp_client.ReceiveBufferSize);
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }

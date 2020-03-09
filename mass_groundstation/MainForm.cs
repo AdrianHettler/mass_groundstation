@@ -18,132 +18,121 @@ namespace mass_groundstation
 {
     public partial class MainForm : Form
     {
-        public delegate void testDelegate();
-        bool ip_connected = false;
+        public static NetworkStream tcp_stream;
+        public static TcpClient tcp_client;
+        private bool tcp_connected = false;
 
-     
-
+        BackgroundWorker worker;
         public MainForm()
         {
             InitializeComponent();
 
-            Thread t = new Thread(new ThreadStart(tcp_thread));
-            t.Start();
-
-            //BeginWork();
-
+            worker = new BackgroundWorker();
+            worker.WorkerReportsProgress = true; //set to true to fire the progress-changed event
+            worker.DoWork += refresh_connections;
         }
 
-        public struct message
+        private void refresh_connections(object sender, DoWorkEventArgs e)
         {
-            public message(ushort Length, byte Message_id)
+            PingReply reply = Helper.ping_ip(textBox_EXP_IP.Text);
+            if (reply.Status == IPStatus.Success)
             {
-                length = Length;
-                message_id = Message_id;
-            }
-
-            public ushort length;
-            public byte message_id;
-        }
-
-        byte[] getBytes(message str)
-        {
-            int size = Marshal.SizeOf(str);
-            byte[] arr = new byte[size];
-
-            IntPtr ptr = Marshal.AllocHGlobal(size);
-            Marshal.StructureToPtr(str, ptr, true);
-            Marshal.Copy(ptr, arr, 0, size);
-            Marshal.FreeHGlobal(ptr);
-            return arr;
-
-        }
-
-        message fromBytes(byte[] arr)
-        {
-            message str = new message();
-
-            int size = Marshal.SizeOf(str);
-            IntPtr ptr = Marshal.AllocHGlobal(size);
-
-            Marshal.Copy(arr, 0, ptr, size);
-
-            str = (message)Marshal.PtrToStructure(ptr, str.GetType());
-            Marshal.FreeHGlobal(ptr);
-
-            return str;
-        }
-
-        private void tcp_thread()
-        {
-            NetworkStream tcp_stream = Helper.init_tcp_client(textBox_EXP_IP.Text, (int)numericUpDown_TCP_PORT.Value);
-            TcpClient tcp_client = Helper.get_tcp_client();
-
-            while (true)
-            {
-                message test_msg;
-                test_msg.length = 2;
-                test_msg.message_id = 1;
-
-
-                byte[] bytesToSend = getBytes(test_msg);
-
-                tcp_stream.Write(bytesToSend, 0, bytesToSend.Length);
-
-                //---read back the text---
-                byte[] bytesToRead = new byte[tcp_client.ReceiveBufferSize];
-
-
-                int bytesRead = tcp_stream.Read(bytesToRead, 0, tcp_client.ReceiveBufferSize);
-               // OutputTextBox_add_output_message("Received : " + Encoding.ASCII.GetString(bytesToRead, 0, bytesRead));
-                // Console.WriteLine("Received : " + Encoding.ASCII.GetString(bytesToRead, 0, bytesRead));
-               
-                Task.Delay(500);
-            }
-        }
-
-
-        private async void BeginWork()
-        {
-            NetworkStream tcp_stream = Helper.init_tcp_client(textBox_EXP_IP.Text, (int)numericUpDown_TCP_PORT.Value);
-            TcpClient tcp_client = Helper.get_tcp_client();       
-        }
-
-        private async void thread()
-        {
-            if (OutputTextBox.InvokeRequired)
-            {
-                OutputTextBox.BeginInvoke(new testDelegate(thread));
+                label_PING_TIME.Invoke((MethodInvoker)delegate
+                {
+                    label_PING_TIME.Text = reply.RoundtripTime.ToString() + " ms";
+                    label_PING_TIME.ForeColor = reply.RoundtripTime < 50 ? Color.Green : Color.Yellow; ;
+                });
             }
             else
             {
-                OutputTextBox_add_output_message("TST");
+                label_PING_TIME.Invoke((MethodInvoker)delegate
+                {
+                    label_PING_TIME.Text = "NOT CONNECTED";
+                    label_PING_TIME.ForeColor = Color.Red;
+                });
             }
 
-            Thread.Sleep(10);
+            if(tcp_connected)
+            {
+                byte[] message_ping_payload = { 0x2, 0x2 };
+
+                try
+                {
+                    if (tcp_stream.CanWrite)
+                    {
+                        tcp_stream.Write(message_ping_payload, 0, message_ping_payload.Length);
+
+                        if (tcp_stream.CanRead)
+                        {
+                            byte[] message_ping_payload_receive = new byte[tcp_client.ReceiveBufferSize];
+                            int bytesRead = tcp_stream.Read(message_ping_payload_receive, 0, tcp_client.ReceiveBufferSize);
+
+                            if (message_ping_payload_receive[0] == (byte)3)
+                            {
+                                label_TCP_STATUS_OUTPUT.Invoke((MethodInvoker)delegate
+                                {
+                                    label_TCP_STATUS_OUTPUT.Text = "CONNECTED";
+                                    label_TCP_STATUS_OUTPUT.ForeColor = Color.Green;
+                                });
+                            }
+                            else
+                            {
+                                label_TCP_STATUS_OUTPUT.Invoke((MethodInvoker)delegate
+                                {
+                                    label_TCP_STATUS_OUTPUT.Text = "NOT CONNECTED";
+                                    label_TCP_STATUS_OUTPUT.ForeColor = Color.Red;
+                                });
+                            }
+                        }
+                    }
+                }
+                catch (Exception except)
+                {
+                    Helper.close_tcp_client();
+                    tcp_connected = false;
+
+                    OutputTextBox.Invoke((MethodInvoker)delegate
+                    {
+                        OutputTextBox_add_output_message(except.Message);
+                    });
+
+                    label_TCP_STATUS_OUTPUT.Invoke((MethodInvoker)delegate
+                    {
+                        label_TCP_STATUS_OUTPUT.Text = "NOT CONNECTED";
+                        label_TCP_STATUS_OUTPUT.ForeColor = Color.Red;
+                    });
+
+                }
+            }
+            else
+            {
+                try
+                {
+                    bool tcp_init = Helper.init_tcp_client(textBox_EXP_IP.Text, (int)numericUpDown_TCP_PORT.Value);
+                    if(tcp_init)
+                    {
+                        tcp_stream = Helper.get_tcp_netstream();
+                        tcp_client = Helper.get_tcp_client();
+                        tcp_connected = Helper.send_initial_tcp_payload();
+                    }
+                    else
+                    {
+                        OutputTextBox.Invoke((MethodInvoker)delegate
+                        {
+                            OutputTextBox_add_output_message("TCP Initiation failed");
+                        });
+                    }
+                  
+                }
+                catch (Exception except)
+                {                    
+                    OutputTextBox.Invoke((MethodInvoker)delegate
+                    {
+                        OutputTextBox_add_output_message(except.Message);
+                    });
+                }
+            }
         }
-
-        private async void tcp_client()
-        {
-            string textToSend = DateTime.Now.ToString();
-
-            //---create a TCPClient object at the IP and port no.---
-            TcpClient client = new TcpClient(textBox_EXP_IP.Text, (int)numericUpDown_TCP_PORT.Value);
-            NetworkStream nwStream = client.GetStream();
-            byte[] bytesToSend = ASCIIEncoding.ASCII.GetBytes(textToSend);
-
-            //---send the text---
-            Console.WriteLine("Sending : " + textToSend);
-            nwStream.Write(bytesToSend, 0, bytesToSend.Length);
-
-            //---read back the text---
-            byte[] bytesToRead = new byte[client.ReceiveBufferSize];
-            int bytesRead = nwStream.Read(bytesToRead, 0, client.ReceiveBufferSize);
-            Console.WriteLine("Received : " + Encoding.ASCII.GetString(bytesToRead, 0, bytesRead));
-            Console.ReadLine();
-            client.Close();
-        }
-
 
         private void OutputTextBox_TextChanged(object sender, EventArgs e)
         {
@@ -213,23 +202,26 @@ namespace mass_groundstation
 
         private void button_single_PING_Click(object sender, EventArgs e)
         {
-            PingReply reply = Helper.ping_ip(textBox_EXP_IP.Text);
-
-            if (reply.Status == IPStatus.Success)
+            if (!worker.IsBusy)
             {
-                label_PING_TIME.Text = reply.RoundtripTime.ToString() + " ms";
-                label_PING_TIME.ForeColor = reply.RoundtripTime < 50 ? Color.Green : Color.Yellow; ;
-                ip_connected = true;
-            }
-            else
-            {
-                label_PING_TIME.Text = "NOT CONNECTED";
-                label_PING_TIME.ForeColor = Color.Red;
-                ip_connected = false;
+                label_connection_last_refresh_output.Text = DateTime.Now.ToString("hh:mm:ss");
+                worker.RunWorkerAsync();
             }
         }
 
+        private void numericUpDown_ping_refresh_ValueChanged(object sender, EventArgs e)
+        {        
+            timer_ping_refresh.Interval = (int)numericUpDown_ping_refresh.Value * 1000; // Interval in ms
+        }
 
+        private void timer_ping_refresh_Tick(object sender, EventArgs e)
+        {
+           if(!worker.IsBusy)
+            {
+                label_connection_last_refresh_output.Text = DateTime.Now.ToString("hh:mm:ss");
+                worker.RunWorkerAsync();
+            }              
+        }
     }
 }
 
