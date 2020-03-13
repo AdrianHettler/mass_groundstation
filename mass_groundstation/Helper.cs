@@ -6,6 +6,14 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
 using System.Net.NetworkInformation;
+using System.Runtime.InteropServices;
+using System.Drawing;
+using System.Windows.Forms;
+using System.ComponentModel;
+using System.Data;
+using System.IO;
+using System.Threading;
+
 
 namespace mass_groundstation
 {
@@ -104,6 +112,31 @@ namespace mass_groundstation
                 }
             }
             return false;
+        }
+
+        public static void change_label(Label lab, string text, Color col, bool GUI_thread = true)
+        {
+            if (GUI_thread)
+            {
+                lab.Text = text;
+                lab.ForeColor = col;
+            }
+            else
+            {
+                lab.Invoke((MethodInvoker)delegate
+                {
+                    lab.Text = text;
+                    lab.ForeColor = col;
+                });
+            }
+        }
+
+        public static void write_log(string log, string log_path = @"C:\Log.txt")
+        {
+            using (StreamWriter sw = new StreamWriter(log_path, true))
+            {
+                sw.WriteLine(log);
+            }
         }
     }
 }

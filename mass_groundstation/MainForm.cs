@@ -22,6 +22,9 @@ namespace mass_groundstation
         public static TcpClient tcp_client;
         private bool tcp_connected = false;
 
+        UdpClient udp_client;
+        IPEndPoint udp_endpoint;
+
         BackgroundWorker worker;
         public MainForm()
         {
@@ -30,7 +33,42 @@ namespace mass_groundstation
             worker = new BackgroundWorker();
             worker.WorkerReportsProgress = true; //set to true to fire the progress-changed event
             worker.DoWork += refresh_connections;
+
+            Thread thdUDPServer = new Thread(new ThreadStart(udp_server_thread));
+            thdUDPServer.Start();
+
         }
+
+        public void udp_server_thread()
+        {
+            udp_client = new UdpClient((int)numericUpDown_UDP_PORT.Value);
+            udp_endpoint = new IPEndPoint(IPAddress.Parse(textBox_EXP_IP.Text), 0);
+
+            while (true)
+            {
+                try
+                {
+                    Byte[] receiveBytes = udp_client.Receive(ref udp_endpoint);
+                    //string returnData = Encoding.ASCII.GetString(receiveBytes);
+
+
+                    //    OutputTextBox.Invoke((MethodInvoker)delegate
+                    //{
+                    //    OutputTextBox_add_output_message(returnData.ToString());
+                    //});
+
+                }
+
+                catch (Exception except)
+                {
+                    OutputTextBox.Invoke((MethodInvoker)delegate
+                    {
+                        OutputTextBox_add_output_message(except.Message);
+                    });
+                }
+            }
+        }
+
 
         private void refresh_connections(object sender, DoWorkEventArgs e)
         {
@@ -40,7 +78,7 @@ namespace mass_groundstation
                 label_PING_TIME.Invoke((MethodInvoker)delegate
                 {
                     label_PING_TIME.Text = reply.RoundtripTime.ToString() + " ms";
-                    label_PING_TIME.ForeColor = reply.RoundtripTime < 50 ? Color.Green : Color.Yellow; ;
+                    label_PING_TIME.ForeColor = reply.RoundtripTime < 50 ? Color.Green : Color.Orange;
                 });
             }
             else
@@ -52,7 +90,34 @@ namespace mass_groundstation
                 });
             }
 
-            if(tcp_connected)
+            if (!tcp_connected)
+            {
+                try
+                {
+                    bool tcp_init = Helper.init_tcp_client(textBox_EXP_IP.Text, (int)numericUpDown_TCP_PORT.Value);
+                    if (tcp_init)
+                    {
+                        tcp_stream = Helper.get_tcp_netstream();
+                        tcp_client = Helper.get_tcp_client();
+                        tcp_connected = Helper.send_initial_tcp_payload();
+
+                        if(tcp_connected)
+                            OutputTextBox_add_output_message("TCP INIT SUCCESS", false);
+                        else
+                            OutputTextBox_add_output_message("TCP INIT ERROR - IP/PORT found, initial Write/Read Failed", false);                          
+                    }
+                    else
+                    {
+                        OutputTextBox_add_output_message("TCP INIT ERROR - IP/PORT not available (NO CONNECTION)", false);
+                    }
+                }
+                catch (Exception except)
+                {
+                    OutputTextBox_add_output_message("TCP INIT ERROR - Exception thrown: " + except.Message, false);
+                }
+            }
+
+            if (tcp_connected)
             {
                 byte[] message_ping_payload = { 0x2, 0x2 };
 
@@ -68,21 +133,9 @@ namespace mass_groundstation
                             int bytesRead = tcp_stream.Read(message_ping_payload_receive, 0, tcp_client.ReceiveBufferSize);
 
                             if (message_ping_payload_receive[0] == (byte)3)
-                            {
-                                label_TCP_STATUS_OUTPUT.Invoke((MethodInvoker)delegate
-                                {
-                                    label_TCP_STATUS_OUTPUT.Text = "CONNECTED";
-                                    label_TCP_STATUS_OUTPUT.ForeColor = Color.Green;
-                                });
-                            }
+                                Helper.change_label(label_TCP_STATUS_OUTPUT, "CONNECTED", Color.Green, false);
                             else
-                            {
-                                label_TCP_STATUS_OUTPUT.Invoke((MethodInvoker)delegate
-                                {
-                                    label_TCP_STATUS_OUTPUT.Text = "NOT CONNECTED";
-                                    label_TCP_STATUS_OUTPUT.ForeColor = Color.Red;
-                                });
-                            }
+                                Helper.change_label(label_TCP_STATUS_OUTPUT, "NOT CONNECTED", Color.Red, false);                       
                         }
                     }
                 }
@@ -90,46 +143,8 @@ namespace mass_groundstation
                 {
                     Helper.close_tcp_client();
                     tcp_connected = false;
-
-                    OutputTextBox.Invoke((MethodInvoker)delegate
-                    {
-                        OutputTextBox_add_output_message(except.Message);
-                    });
-
-                    label_TCP_STATUS_OUTPUT.Invoke((MethodInvoker)delegate
-                    {
-                        label_TCP_STATUS_OUTPUT.Text = "NOT CONNECTED";
-                        label_TCP_STATUS_OUTPUT.ForeColor = Color.Red;
-                    });
-
-                }
-            }
-            else
-            {
-                try
-                {
-                    bool tcp_init = Helper.init_tcp_client(textBox_EXP_IP.Text, (int)numericUpDown_TCP_PORT.Value);
-                    if(tcp_init)
-                    {
-                        tcp_stream = Helper.get_tcp_netstream();
-                        tcp_client = Helper.get_tcp_client();
-                        tcp_connected = Helper.send_initial_tcp_payload();
-                    }
-                    else
-                    {
-                        OutputTextBox.Invoke((MethodInvoker)delegate
-                        {
-                            OutputTextBox_add_output_message("TCP Initiation failed");
-                        });
-                    }
-                  
-                }
-                catch (Exception except)
-                {                    
-                    OutputTextBox.Invoke((MethodInvoker)delegate
-                    {
-                        OutputTextBox_add_output_message(except.Message);
-                    });
+                    OutputTextBox_add_output_message("TCP READ/WRITE ERROR - Exception: " + except.Message,false);
+                    Helper.change_label(label_TCP_STATUS_OUTPUT, "NOT CONNECTED", Color.Red, false);
                 }
             }
         }
@@ -141,30 +156,29 @@ namespace mass_groundstation
             OutputTextBox.ScrollToCaret();   // scroll it automatically     
         }
 
-        public static void write_log(string log)
-        {
-            using (StreamWriter sw = new StreamWriter(@"C:\Log.txt", true))
-            {
-                sw.WriteLine(log);
-            }
-        }
 
-        public void OutputTextBox_add_output_message(string text, bool add_timestamp = true, bool log = true)
+        public void OutputTextBox_add_output_message(string text, bool GUI_thread = true, bool add_timestamp = true, bool log = true)
         {
-            string output_text = DateTime.Now.ToString("hh:mm:ss  -  ") + text; // add time to output
+            string output_text = DateTime.Now.ToString("HH:mm:ss  -  ") + text; // add time to output
 
             if (log)
             {
-                write_log(output_text);
+                Helper.write_log(output_text);
             }
 
-            OutputTextBox.AppendText(output_text);  // add text to OutputTextBox
-            OutputTextBox.AppendText(Environment.NewLine); // new line
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            OutputTextBox_add_output_message("hi this is a test", true, enable_logging.Checked);
+            if(GUI_thread)
+            {
+                OutputTextBox.AppendText(output_text);  // add text to OutputTextBox
+                OutputTextBox.AppendText(Environment.NewLine); // new line
+            }
+            else
+            {
+                OutputTextBox.Invoke((MethodInvoker)delegate
+                {
+                    OutputTextBox.AppendText(output_text);  // add text to OutputTextBox
+                    OutputTextBox.AppendText(Environment.NewLine); // new line
+                });
+            }
         }
 
         private void clear_log_Click(object sender, EventArgs e)
@@ -175,7 +189,6 @@ namespace mass_groundstation
             }
         }
 
-
         private void button_refresh_EXP_IP_Click(object sender, EventArgs e)
         {
             textBox_GS_IP.Text = Helper.get_local_ip();
@@ -183,7 +196,7 @@ namespace mass_groundstation
 
         private void checkBox_lock_IP_config_CheckedChanged(object sender, EventArgs e)
         {
-            if(checkBox_lock_IP_config.Checked)
+            if (checkBox_lock_IP_config.Checked)
             {
                 textBox_GS_IP.ReadOnly = true;
                 textBox_EXP_IP.ReadOnly = true;
@@ -199,28 +212,27 @@ namespace mass_groundstation
             }
         }
 
-
         private void button_single_PING_Click(object sender, EventArgs e)
         {
             if (!worker.IsBusy)
             {
-                label_connection_last_refresh_output.Text = DateTime.Now.ToString("hh:mm:ss");
+                label_connection_last_refresh_output.Text = DateTime.Now.ToString("HH:mm:ss");
                 worker.RunWorkerAsync();
             }
         }
 
         private void numericUpDown_ping_refresh_ValueChanged(object sender, EventArgs e)
-        {        
+        {
             timer_ping_refresh.Interval = (int)numericUpDown_ping_refresh.Value * 1000; // Interval in ms
         }
 
         private void timer_ping_refresh_Tick(object sender, EventArgs e)
         {
-           if(!worker.IsBusy)
+            if (!worker.IsBusy)
             {
-                label_connection_last_refresh_output.Text = DateTime.Now.ToString("hh:mm:ss");
+                label_connection_last_refresh_output.Text = DateTime.Now.ToString("HH:mm:ss");
                 worker.RunWorkerAsync();
-            }              
+            }
         }
     }
 }

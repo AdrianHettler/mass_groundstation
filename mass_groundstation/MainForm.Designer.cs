@@ -35,15 +35,14 @@ namespace mass_groundstation
             this.fontDialog1 = new System.Windows.Forms.FontDialog();
             this.StatusBar = new System.Windows.Forms.StatusStrip();
             this.OutputTextBox = new System.Windows.Forms.RichTextBox();
-            this.LogTest = new System.Windows.Forms.Button();
             this.clear_log = new System.Windows.Forms.Button();
             this.enable_logging = new System.Windows.Forms.CheckBox();
             this.TabControl = new System.Windows.Forms.TabControl();
             this.Tab_Logs = new System.Windows.Forms.TabPage();
             this.Tab_Connection = new System.Windows.Forms.TabPage();
-            this.label_UDP_STATUS_OUTPUT = new System.Windows.Forms.Label();
+            this.label_connection_last_refresh_output = new System.Windows.Forms.Label();
+            this.label_last_connection_refresh = new System.Windows.Forms.Label();
             this.label_TCP_STATUS_OUTPUT = new System.Windows.Forms.Label();
-            this.label_STATUS_UDP = new System.Windows.Forms.Label();
             this.label_STATUS_TCP = new System.Windows.Forms.Label();
             this.label_PING_TIME = new System.Windows.Forms.Label();
             this.button_connection_refresh = new System.Windows.Forms.Button();
@@ -61,8 +60,6 @@ namespace mass_groundstation
             this.label_GS_IP = new System.Windows.Forms.Label();
             this.label_EXP_IP = new System.Windows.Forms.Label();
             this.timer_ping_refresh = new System.Windows.Forms.Timer(this.components);
-            this.label_last_connection_refresh = new System.Windows.Forms.Label();
-            this.label_connection_last_refresh_output = new System.Windows.Forms.Label();
             this.TabControl.SuspendLayout();
             this.Tab_Logs.SuspendLayout();
             this.Tab_Connection.SuspendLayout();
@@ -91,16 +88,6 @@ namespace mass_groundstation
             this.OutputTextBox.TabIndex = 1;
             this.OutputTextBox.Text = "";
             this.OutputTextBox.TextChanged += new System.EventHandler(this.OutputTextBox_TextChanged);
-            // 
-            // LogTest
-            // 
-            this.LogTest.Location = new System.Drawing.Point(210, 6);
-            this.LogTest.Name = "LogTest";
-            this.LogTest.Size = new System.Drawing.Size(75, 23);
-            this.LogTest.TabIndex = 2;
-            this.LogTest.Text = "LogTest";
-            this.LogTest.UseVisualStyleBackColor = true;
-            this.LogTest.Click += new System.EventHandler(this.button1_Click);
             // 
             // clear_log
             // 
@@ -142,7 +129,6 @@ namespace mass_groundstation
             this.Tab_Logs.Controls.Add(this.enable_logging);
             this.Tab_Logs.Controls.Add(this.OutputTextBox);
             this.Tab_Logs.Controls.Add(this.clear_log);
-            this.Tab_Logs.Controls.Add(this.LogTest);
             this.Tab_Logs.Location = new System.Drawing.Point(4, 22);
             this.Tab_Logs.Name = "Tab_Logs";
             this.Tab_Logs.Padding = new System.Windows.Forms.Padding(3);
@@ -155,9 +141,7 @@ namespace mass_groundstation
             // 
             this.Tab_Connection.Controls.Add(this.label_connection_last_refresh_output);
             this.Tab_Connection.Controls.Add(this.label_last_connection_refresh);
-            this.Tab_Connection.Controls.Add(this.label_UDP_STATUS_OUTPUT);
             this.Tab_Connection.Controls.Add(this.label_TCP_STATUS_OUTPUT);
-            this.Tab_Connection.Controls.Add(this.label_STATUS_UDP);
             this.Tab_Connection.Controls.Add(this.label_STATUS_TCP);
             this.Tab_Connection.Controls.Add(this.label_PING_TIME);
             this.Tab_Connection.Controls.Add(this.button_connection_refresh);
@@ -182,17 +166,27 @@ namespace mass_groundstation
             this.Tab_Connection.Text = "Connection";
             this.Tab_Connection.UseVisualStyleBackColor = true;
             // 
-            // label_UDP_STATUS_OUTPUT
+            // label_connection_last_refresh_output
             // 
-            this.label_UDP_STATUS_OUTPUT.AutoSize = true;
-            this.label_UDP_STATUS_OUTPUT.BackColor = System.Drawing.Color.Transparent;
-            this.label_UDP_STATUS_OUTPUT.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_UDP_STATUS_OUTPUT.ForeColor = System.Drawing.Color.Red;
-            this.label_UDP_STATUS_OUTPUT.Location = new System.Drawing.Point(176, 186);
-            this.label_UDP_STATUS_OUTPUT.Name = "label_UDP_STATUS_OUTPUT";
-            this.label_UDP_STATUS_OUTPUT.Size = new System.Drawing.Size(123, 15);
-            this.label_UDP_STATUS_OUTPUT.TabIndex = 25;
-            this.label_UDP_STATUS_OUTPUT.Text = "NOT CONNECTED";
+            this.label_connection_last_refresh_output.AutoSize = true;
+            this.label_connection_last_refresh_output.BackColor = System.Drawing.Color.Transparent;
+            this.label_connection_last_refresh_output.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_connection_last_refresh_output.Location = new System.Drawing.Point(176, 203);
+            this.label_connection_last_refresh_output.Name = "label_connection_last_refresh_output";
+            this.label_connection_last_refresh_output.Size = new System.Drawing.Size(53, 15);
+            this.label_connection_last_refresh_output.TabIndex = 27;
+            this.label_connection_last_refresh_output.Text = "NEVER";
+            // 
+            // label_last_connection_refresh
+            // 
+            this.label_last_connection_refresh.AutoSize = true;
+            this.label_last_connection_refresh.BackColor = System.Drawing.Color.Transparent;
+            this.label_last_connection_refresh.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_last_connection_refresh.Location = new System.Drawing.Point(32, 202);
+            this.label_last_connection_refresh.Name = "label_last_connection_refresh";
+            this.label_last_connection_refresh.Size = new System.Drawing.Size(95, 16);
+            this.label_last_connection_refresh.TabIndex = 26;
+            this.label_last_connection_refresh.Text = "Last Refresh";
             // 
             // label_TCP_STATUS_OUTPUT
             // 
@@ -200,29 +194,18 @@ namespace mass_groundstation
             this.label_TCP_STATUS_OUTPUT.BackColor = System.Drawing.Color.Transparent;
             this.label_TCP_STATUS_OUTPUT.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_TCP_STATUS_OUTPUT.ForeColor = System.Drawing.Color.Red;
-            this.label_TCP_STATUS_OUTPUT.Location = new System.Drawing.Point(176, 201);
+            this.label_TCP_STATUS_OUTPUT.Location = new System.Drawing.Point(176, 185);
             this.label_TCP_STATUS_OUTPUT.Name = "label_TCP_STATUS_OUTPUT";
             this.label_TCP_STATUS_OUTPUT.Size = new System.Drawing.Size(123, 15);
             this.label_TCP_STATUS_OUTPUT.TabIndex = 24;
             this.label_TCP_STATUS_OUTPUT.Text = "NOT CONNECTED";
-            // 
-            // label_STATUS_UDP
-            // 
-            this.label_STATUS_UDP.AutoSize = true;
-            this.label_STATUS_UDP.BackColor = System.Drawing.Color.Transparent;
-            this.label_STATUS_UDP.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_STATUS_UDP.Location = new System.Drawing.Point(32, 186);
-            this.label_STATUS_UDP.Name = "label_STATUS_UDP";
-            this.label_STATUS_UDP.Size = new System.Drawing.Size(40, 16);
-            this.label_STATUS_UDP.TabIndex = 23;
-            this.label_STATUS_UDP.Text = "UDP";
             // 
             // label_STATUS_TCP
             // 
             this.label_STATUS_TCP.AutoSize = true;
             this.label_STATUS_TCP.BackColor = System.Drawing.Color.Transparent;
             this.label_STATUS_TCP.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_STATUS_TCP.Location = new System.Drawing.Point(32, 201);
+            this.label_STATUS_TCP.Location = new System.Drawing.Point(32, 186);
             this.label_STATUS_TCP.Name = "label_STATUS_TCP";
             this.label_STATUS_TCP.Size = new System.Drawing.Size(38, 16);
             this.label_STATUS_TCP.TabIndex = 22;
@@ -242,7 +225,7 @@ namespace mass_groundstation
             // 
             // button_connection_refresh
             // 
-            this.button_connection_refresh.Location = new System.Drawing.Point(179, 280);
+            this.button_connection_refresh.Location = new System.Drawing.Point(179, 247);
             this.button_connection_refresh.Name = "button_connection_refresh";
             this.button_connection_refresh.Size = new System.Drawing.Size(100, 23);
             this.button_connection_refresh.TabIndex = 18;
@@ -253,7 +236,7 @@ namespace mass_groundstation
             // label_sek
             // 
             this.label_sek.AutoSize = true;
-            this.label_sek.Location = new System.Drawing.Point(285, 257);
+            this.label_sek.Location = new System.Drawing.Point(241, 223);
             this.label_sek.Name = "label_sek";
             this.label_sek.Size = new System.Drawing.Size(38, 13);
             this.label_sek.TabIndex = 17;
@@ -264,7 +247,7 @@ namespace mass_groundstation
             this.label_PING_REFRESH.AutoSize = true;
             this.label_PING_REFRESH.BackColor = System.Drawing.Color.Transparent;
             this.label_PING_REFRESH.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_PING_REFRESH.Location = new System.Drawing.Point(32, 254);
+            this.label_PING_REFRESH.Location = new System.Drawing.Point(32, 221);
             this.label_PING_REFRESH.Name = "label_PING_REFRESH";
             this.label_PING_REFRESH.Size = new System.Drawing.Size(99, 16);
             this.label_PING_REFRESH.TabIndex = 16;
@@ -272,7 +255,7 @@ namespace mass_groundstation
             // 
             // numericUpDown_ping_refresh
             // 
-            this.numericUpDown_ping_refresh.Location = new System.Drawing.Point(179, 254);
+            this.numericUpDown_ping_refresh.Location = new System.Drawing.Point(179, 221);
             this.numericUpDown_ping_refresh.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -284,7 +267,7 @@ namespace mass_groundstation
             0,
             0});
             this.numericUpDown_ping_refresh.Name = "numericUpDown_ping_refresh";
-            this.numericUpDown_ping_refresh.Size = new System.Drawing.Size(100, 20);
+            this.numericUpDown_ping_refresh.Size = new System.Drawing.Size(56, 20);
             this.numericUpDown_ping_refresh.TabIndex = 15;
             this.numericUpDown_ping_refresh.Value = new decimal(new int[] {
             60,
@@ -411,28 +394,6 @@ namespace mass_groundstation
             this.timer_ping_refresh.Interval = 60000;
             this.timer_ping_refresh.Tick += new System.EventHandler(this.timer_ping_refresh_Tick);
             // 
-            // label_last_connection_refresh
-            // 
-            this.label_last_connection_refresh.AutoSize = true;
-            this.label_last_connection_refresh.BackColor = System.Drawing.Color.Transparent;
-            this.label_last_connection_refresh.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_last_connection_refresh.Location = new System.Drawing.Point(32, 217);
-            this.label_last_connection_refresh.Name = "label_last_connection_refresh";
-            this.label_last_connection_refresh.Size = new System.Drawing.Size(95, 16);
-            this.label_last_connection_refresh.TabIndex = 26;
-            this.label_last_connection_refresh.Text = "Last Refresh";
-            // 
-            // label_connection_last_refresh_output
-            // 
-            this.label_connection_last_refresh_output.AutoSize = true;
-            this.label_connection_last_refresh_output.BackColor = System.Drawing.Color.Transparent;
-            this.label_connection_last_refresh_output.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_connection_last_refresh_output.Location = new System.Drawing.Point(176, 218);
-            this.label_connection_last_refresh_output.Name = "label_connection_last_refresh_output";
-            this.label_connection_last_refresh_output.Size = new System.Drawing.Size(53, 15);
-            this.label_connection_last_refresh_output.TabIndex = 27;
-            this.label_connection_last_refresh_output.Text = "NEVER";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -464,7 +425,6 @@ namespace mass_groundstation
         private System.Windows.Forms.FontDialog fontDialog1;
         private System.Windows.Forms.StatusStrip StatusBar;
         private System.Windows.Forms.RichTextBox OutputTextBox;
-        private System.Windows.Forms.Button LogTest;
         private System.Windows.Forms.Button clear_log;
         private System.Windows.Forms.CheckBox enable_logging;
         private System.Windows.Forms.TabControl TabControl;
@@ -485,9 +445,7 @@ namespace mass_groundstation
         private System.Windows.Forms.Label label_sek;
         private System.Windows.Forms.Label label_PING_REFRESH;
         private System.Windows.Forms.Label label_PING_TIME;
-        private System.Windows.Forms.Label label_UDP_STATUS_OUTPUT;
         private System.Windows.Forms.Label label_TCP_STATUS_OUTPUT;
-        private System.Windows.Forms.Label label_STATUS_UDP;
         private System.Windows.Forms.Label label_STATUS_TCP;
         private System.Windows.Forms.Timer timer_ping_refresh;
         private System.Windows.Forms.Label label_last_connection_refresh;
