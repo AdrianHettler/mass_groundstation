@@ -59,13 +59,29 @@ namespace mass_groundstation
             this.label_UDP_PORT = new System.Windows.Forms.Label();
             this.label_GS_IP = new System.Windows.Forms.Label();
             this.label_EXP_IP = new System.Windows.Forms.Label();
+            this.Tab_Camera = new System.Windows.Forms.TabPage();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.checkBox_CAM1_LOCK = new System.Windows.Forms.CheckBox();
+            this.button_CAM1_STOP = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label_CAM1_STATUS = new System.Windows.Forms.Label();
+            this.button_CAM1_START = new System.Windows.Forms.Button();
             this.timer_ping_refresh = new System.Windows.Forms.Timer(this.components);
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.button2 = new System.Windows.Forms.Button();
             this.TabControl.SuspendLayout();
             this.Tab_Logs.SuspendLayout();
             this.Tab_Connection.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_ping_refresh)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_TCP_PORT)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_UDP_PORT)).BeginInit();
+            this.Tab_Camera.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // StatusBar
@@ -118,6 +134,7 @@ namespace mass_groundstation
             | System.Windows.Forms.AnchorStyles.Right)));
             this.TabControl.Controls.Add(this.Tab_Logs);
             this.TabControl.Controls.Add(this.Tab_Connection);
+            this.TabControl.Controls.Add(this.Tab_Camera);
             this.TabControl.Location = new System.Drawing.Point(0, 0);
             this.TabControl.Name = "TabControl";
             this.TabControl.SelectedIndex = 0;
@@ -388,11 +405,149 @@ namespace mass_groundstation
             this.label_EXP_IP.TabIndex = 0;
             this.label_EXP_IP.Text = "Experiment IP";
             // 
+            // Tab_Camera
+            // 
+            this.Tab_Camera.Controls.Add(this.groupBox2);
+            this.Tab_Camera.Controls.Add(this.groupBox1);
+            this.Tab_Camera.Location = new System.Drawing.Point(4, 22);
+            this.Tab_Camera.Name = "Tab_Camera";
+            this.Tab_Camera.Padding = new System.Windows.Forms.Padding(3);
+            this.Tab_Camera.Size = new System.Drawing.Size(1505, 772);
+            this.Tab_Camera.TabIndex = 2;
+            this.Tab_Camera.Text = "Camera";
+            this.Tab_Camera.UseVisualStyleBackColor = true;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.checkBox_CAM1_LOCK);
+            this.groupBox1.Controls.Add(this.button_CAM1_STOP);
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.label_CAM1_STATUS);
+            this.groupBox1.Controls.Add(this.button_CAM1_START);
+            this.groupBox1.Location = new System.Drawing.Point(8, 6);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(562, 72);
+            this.groupBox1.TabIndex = 0;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Camera 1";
+            // 
+            // checkBox_CAM1_LOCK
+            // 
+            this.checkBox_CAM1_LOCK.AutoSize = true;
+            this.checkBox_CAM1_LOCK.Location = new System.Drawing.Point(6, 48);
+            this.checkBox_CAM1_LOCK.Name = "checkBox_CAM1_LOCK";
+            this.checkBox_CAM1_LOCK.Size = new System.Drawing.Size(77, 17);
+            this.checkBox_CAM1_LOCK.TabIndex = 1;
+            this.checkBox_CAM1_LOCK.Text = "Lock Input";
+            this.checkBox_CAM1_LOCK.UseVisualStyleBackColor = true;
+            this.checkBox_CAM1_LOCK.CheckedChanged += new System.EventHandler(this.checkBox_CAM1_LOCK_CheckedChanged);
+            // 
+            // button_CAM1_STOP
+            // 
+            this.button_CAM1_STOP.Location = new System.Drawing.Point(114, 19);
+            this.button_CAM1_STOP.Name = "button_CAM1_STOP";
+            this.button_CAM1_STOP.Size = new System.Drawing.Size(95, 23);
+            this.button_CAM1_STOP.TabIndex = 3;
+            this.button_CAM1_STOP.Text = "Stop Recording";
+            this.button_CAM1_STOP.UseVisualStyleBackColor = true;
+            this.button_CAM1_STOP.Click += new System.EventHandler(this.button_CAM1_STOP_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(225, 24);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(40, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Status:";
+            // 
+            // label_CAM1_STATUS
+            // 
+            this.label_CAM1_STATUS.AutoSize = true;
+            this.label_CAM1_STATUS.ForeColor = System.Drawing.Color.Red;
+            this.label_CAM1_STATUS.Location = new System.Drawing.Point(271, 24);
+            this.label_CAM1_STATUS.Name = "label_CAM1_STATUS";
+            this.label_CAM1_STATUS.Size = new System.Drawing.Size(98, 13);
+            this.label_CAM1_STATUS.TabIndex = 1;
+            this.label_CAM1_STATUS.Text = "NOT RECORDING";
+            // 
+            // button_CAM1_START
+            // 
+            this.button_CAM1_START.Location = new System.Drawing.Point(6, 19);
+            this.button_CAM1_START.Name = "button_CAM1_START";
+            this.button_CAM1_START.Size = new System.Drawing.Size(102, 23);
+            this.button_CAM1_START.TabIndex = 2;
+            this.button_CAM1_START.Text = "Start Recording";
+            this.button_CAM1_START.UseVisualStyleBackColor = true;
+            this.button_CAM1_START.Click += new System.EventHandler(this.button_CAM1_START_Click);
+            // 
             // timer_ping_refresh
             // 
             this.timer_ping_refresh.Enabled = true;
             this.timer_ping_refresh.Interval = 60000;
             this.timer_ping_refresh.Tick += new System.EventHandler(this.timer_ping_refresh_Tick);
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.checkBox1);
+            this.groupBox2.Controls.Add(this.button1);
+            this.groupBox2.Controls.Add(this.label2);
+            this.groupBox2.Controls.Add(this.label3);
+            this.groupBox2.Controls.Add(this.button2);
+            this.groupBox2.Location = new System.Drawing.Point(576, 6);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(562, 72);
+            this.groupBox2.TabIndex = 1;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Camera 2";
+            this.groupBox2.Enter += new System.EventHandler(this.groupBox2_Enter);
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(6, 48);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(77, 17);
+            this.checkBox1.TabIndex = 1;
+            this.checkBox1.Text = "Lock Input";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(114, 19);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(95, 23);
+            this.button1.TabIndex = 3;
+            this.button1.Text = "Stop Recording";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(225, 24);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(40, 13);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "Status:";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.ForeColor = System.Drawing.Color.Red;
+            this.label3.Location = new System.Drawing.Point(271, 24);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(98, 13);
+            this.label3.TabIndex = 1;
+            this.label3.Text = "NOT RECORDING";
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(6, 19);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(102, 23);
+            this.button2.TabIndex = 2;
+            this.button2.Text = "Start Recording";
+            this.button2.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
@@ -415,6 +570,11 @@ namespace mass_groundstation
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_ping_refresh)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_TCP_PORT)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_UDP_PORT)).EndInit();
+            this.Tab_Camera.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -450,6 +610,19 @@ namespace mass_groundstation
         private System.Windows.Forms.Timer timer_ping_refresh;
         private System.Windows.Forms.Label label_last_connection_refresh;
         private System.Windows.Forms.Label label_connection_last_refresh_output;
+        private System.Windows.Forms.TabPage Tab_Camera;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.CheckBox checkBox_CAM1_LOCK;
+        private System.Windows.Forms.Button button_CAM1_STOP;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label_CAM1_STATUS;
+        private System.Windows.Forms.Button button_CAM1_START;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button button2;
     }
 }
 

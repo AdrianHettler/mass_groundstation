@@ -234,6 +234,37 @@ namespace mass_groundstation
                 worker.RunWorkerAsync();
             }
         }
+
+        private void button_CAM1_START_Click(object sender, EventArgs e)
+        {
+            label_CAM1_STATUS.Text = "RECORDING";
+            label_CAM1_STATUS.ForeColor = Color.Green;
+        }
+
+        private void button_CAM1_STOP_Click(object sender, EventArgs e)
+        {
+            label_CAM1_STATUS.Text = "NOT RECORDING";
+            label_CAM1_STATUS.ForeColor = Color.Red;
+        }
+
+        private void checkBox_CAM1_LOCK_CheckedChanged(object sender, EventArgs e)
+        {
+            if(checkBox_CAM1_LOCK.Checked)
+            {
+                button_CAM1_START.Enabled = false;
+                button_CAM1_STOP.Enabled = false;
+            }
+            else
+            {
+                button_CAM1_START.Enabled = true;
+                button_CAM1_STOP.Enabled = true;
+            }
+        }
+
+        private void groupBox2_Enter(object sender, EventArgs e)
+        {
+
+        }
     }
 }
 
