@@ -31,10 +31,10 @@ namespace mass_groundstation
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.fontDialog1 = new System.Windows.Forms.FontDialog();
             this.StatusBar = new System.Windows.Forms.StatusStrip();
@@ -76,17 +76,17 @@ namespace mass_groundstation
             this.label1 = new System.Windows.Forms.Label();
             this.label_CAM1_STATUS = new System.Windows.Forms.Label();
             this.button_CAM1_START = new System.Windows.Forms.Button();
-            this.timer_ping_refresh = new System.Windows.Forms.Timer(this.components);
             this.Tab_Experiment = new System.Windows.Forms.TabPage();
             this.tab_Ambient_Conditions = new System.Windows.Forms.TabPage();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.textBox_current_ambient_temperature = new System.Windows.Forms.TextBox();
-            this.label_amb_temp = new System.Windows.Forms.Label();
-            this.textBox_current_ambient_pressure = new System.Windows.Forms.TextBox();
+            this.chart_pressure = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.label_amb_pres = new System.Windows.Forms.Label();
-            this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.chart2 = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.textBox_current_ambient_pressure = new System.Windows.Forms.TextBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.chart_temperature = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.label_amb_temp = new System.Windows.Forms.Label();
+            this.textBox_current_ambient_temperature = new System.Windows.Forms.TextBox();
+            this.timer_ping_refresh = new System.Windows.Forms.Timer(this.components);
             this.TabControl.SuspendLayout();
             this.Tab_Logs.SuspendLayout();
             this.Tab_Connection.SuspendLayout();
@@ -97,10 +97,10 @@ namespace mass_groundstation
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tab_Ambient_Conditions.SuspendLayout();
-            this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chart2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chart_pressure)).BeginInit();
+            this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chart_temperature)).BeginInit();
             this.SuspendLayout();
             // 
             // StatusBar
@@ -571,12 +571,6 @@ namespace mass_groundstation
             this.button_CAM1_START.UseVisualStyleBackColor = true;
             this.button_CAM1_START.Click += new System.EventHandler(this.button_CAM1_START_Click);
             // 
-            // timer_ping_refresh
-            // 
-            this.timer_ping_refresh.Enabled = true;
-            this.timer_ping_refresh.Interval = 60000;
-            this.timer_ping_refresh.Tick += new System.EventHandler(this.timer_ping_refresh_Tick);
-            // 
             // Tab_Experiment
             // 
             this.Tab_Experiment.Location = new System.Drawing.Point(4, 22);
@@ -599,22 +593,10 @@ namespace mass_groundstation
             this.tab_Ambient_Conditions.Text = "Ambient Conditions";
             this.tab_Ambient_Conditions.UseVisualStyleBackColor = true;
             // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.chart1);
-            this.groupBox3.Controls.Add(this.label_amb_temp);
-            this.groupBox3.Controls.Add(this.textBox_current_ambient_temperature);
-            this.groupBox3.Location = new System.Drawing.Point(6, 6);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(740, 763);
-            this.groupBox3.TabIndex = 0;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Temperature";
-            // 
             // groupBox4
             // 
             this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox4.Controls.Add(this.chart2);
+            this.groupBox4.Controls.Add(this.chart_pressure);
             this.groupBox4.Controls.Add(this.label_amb_pres);
             this.groupBox4.Controls.Add(this.textBox_current_ambient_pressure);
             this.groupBox4.Location = new System.Drawing.Point(759, 6);
@@ -624,30 +606,22 @@ namespace mass_groundstation
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Pressure";
             // 
-            // textBox_current_ambient_temperature
+            // chart_pressure
             // 
-            this.textBox_current_ambient_temperature.Location = new System.Drawing.Point(116, 17);
-            this.textBox_current_ambient_temperature.Name = "textBox_current_ambient_temperature";
-            this.textBox_current_ambient_temperature.ReadOnly = true;
-            this.textBox_current_ambient_temperature.Size = new System.Drawing.Size(100, 20);
-            this.textBox_current_ambient_temperature.TabIndex = 0;
-            // 
-            // label_amb_temp
-            // 
-            this.label_amb_temp.AutoSize = true;
-            this.label_amb_temp.Location = new System.Drawing.Point(6, 20);
-            this.label_amb_temp.Name = "label_amb_temp";
-            this.label_amb_temp.Size = new System.Drawing.Size(104, 13);
-            this.label_amb_temp.TabIndex = 1;
-            this.label_amb_temp.Text = "Current Temperature";
-            // 
-            // textBox_current_ambient_pressure
-            // 
-            this.textBox_current_ambient_pressure.Location = new System.Drawing.Point(97, 17);
-            this.textBox_current_ambient_pressure.Name = "textBox_current_ambient_pressure";
-            this.textBox_current_ambient_pressure.ReadOnly = true;
-            this.textBox_current_ambient_pressure.Size = new System.Drawing.Size(100, 20);
-            this.textBox_current_ambient_pressure.TabIndex = 0;
+            chartArea1.Name = "ChartArea1";
+            this.chart_pressure.ChartAreas.Add(chartArea1);
+            this.chart_pressure.Location = new System.Drawing.Point(6, 43);
+            this.chart_pressure.Name = "chart_pressure";
+            this.chart_pressure.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.None;
+            this.chart_pressure.PaletteCustomColors = new System.Drawing.Color[] {
+        System.Drawing.Color.Black};
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series1.Name = "Pressure";
+            this.chart_pressure.Series.Add(series1);
+            this.chart_pressure.Size = new System.Drawing.Size(734, 717);
+            this.chart_pressure.TabIndex = 4;
+            this.chart_pressure.Text = "chart2";
             // 
             // label_amb_pres
             // 
@@ -658,35 +632,66 @@ namespace mass_groundstation
             this.label_amb_pres.TabIndex = 1;
             this.label_amb_pres.Text = "Current Pressure";
             // 
-            // chart1
+            // textBox_current_ambient_pressure
             // 
+            this.textBox_current_ambient_pressure.Location = new System.Drawing.Point(97, 17);
+            this.textBox_current_ambient_pressure.Name = "textBox_current_ambient_pressure";
+            this.textBox_current_ambient_pressure.ReadOnly = true;
+            this.textBox_current_ambient_pressure.Size = new System.Drawing.Size(100, 20);
+            this.textBox_current_ambient_pressure.TabIndex = 0;
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.chart_temperature);
+            this.groupBox3.Controls.Add(this.label_amb_temp);
+            this.groupBox3.Controls.Add(this.textBox_current_ambient_temperature);
+            this.groupBox3.Location = new System.Drawing.Point(6, 6);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(740, 763);
+            this.groupBox3.TabIndex = 0;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Temperature";
+            // 
+            // chart_temperature
+            // 
+            chartArea2.BorderColor = System.Drawing.Color.DarkGray;
             chartArea2.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea2);
-            this.chart1.Location = new System.Drawing.Point(0, 43);
-            this.chart1.Name = "chart1";
-            this.chart1.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Grayscale;
+            this.chart_temperature.ChartAreas.Add(chartArea2);
+            this.chart_temperature.Location = new System.Drawing.Point(6, 43);
+            this.chart_temperature.Name = "chart_temperature";
+            this.chart_temperature.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.None;
+            this.chart_temperature.PaletteCustomColors = new System.Drawing.Color[] {
+        System.Drawing.Color.Black};
             series2.ChartArea = "ChartArea1";
             series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
             series2.Name = "Temperature";
-            this.chart1.Series.Add(series2);
-            this.chart1.Size = new System.Drawing.Size(734, 717);
-            this.chart1.TabIndex = 3;
-            this.chart1.Text = "chart1";
+            this.chart_temperature.Series.Add(series2);
+            this.chart_temperature.Size = new System.Drawing.Size(728, 717);
+            this.chart_temperature.TabIndex = 3;
+            this.chart_temperature.Text = "chart1";
             // 
-            // chart2
+            // label_amb_temp
             // 
-            chartArea1.Name = "ChartArea1";
-            this.chart2.ChartAreas.Add(chartArea1);
-            this.chart2.Location = new System.Drawing.Point(6, 43);
-            this.chart2.Name = "chart2";
-            this.chart2.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Grayscale;
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series1.Name = "Pressure";
-            this.chart2.Series.Add(series1);
-            this.chart2.Size = new System.Drawing.Size(734, 717);
-            this.chart2.TabIndex = 4;
-            this.chart2.Text = "chart2";
+            this.label_amb_temp.AutoSize = true;
+            this.label_amb_temp.Location = new System.Drawing.Point(6, 20);
+            this.label_amb_temp.Name = "label_amb_temp";
+            this.label_amb_temp.Size = new System.Drawing.Size(104, 13);
+            this.label_amb_temp.TabIndex = 1;
+            this.label_amb_temp.Text = "Current Temperature";
+            // 
+            // textBox_current_ambient_temperature
+            // 
+            this.textBox_current_ambient_temperature.Location = new System.Drawing.Point(116, 17);
+            this.textBox_current_ambient_temperature.Name = "textBox_current_ambient_temperature";
+            this.textBox_current_ambient_temperature.ReadOnly = true;
+            this.textBox_current_ambient_temperature.Size = new System.Drawing.Size(100, 20);
+            this.textBox_current_ambient_temperature.TabIndex = 0;
+            // 
+            // timer_ping_refresh
+            // 
+            this.timer_ping_refresh.Enabled = true;
+            this.timer_ping_refresh.Interval = 60000;
+            this.timer_ping_refresh.Tick += new System.EventHandler(this.timer_ping_refresh_Tick);
             // 
             // MainForm
             // 
@@ -715,12 +720,12 @@ namespace mass_groundstation
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.tab_Ambient_Conditions.ResumeLayout(false);
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chart2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chart_pressure)).EndInit();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chart_temperature)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -777,8 +782,8 @@ namespace mass_groundstation
         private System.Windows.Forms.TextBox textBox_current_ambient_pressure;
         private System.Windows.Forms.Label label_amb_temp;
         private System.Windows.Forms.TextBox textBox_current_ambient_temperature;
-        private System.Windows.Forms.DataVisualization.Charting.Chart chart2;
-        private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chart_pressure;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chart_temperature;
     }
 }
 

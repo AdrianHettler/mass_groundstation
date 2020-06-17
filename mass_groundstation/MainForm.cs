@@ -26,9 +26,48 @@ namespace mass_groundstation
         IPEndPoint udp_endpoint;
 
         BackgroundWorker worker;
+
+        public void init_charts()
+        {
+            this.chart_temperature.ChartAreas[0].AxisX.LabelStyle.Format = "HH:mm";
+            this.chart_temperature.Series[0].XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.DateTimeOffset;
+            this.chart_temperature.ChartAreas[0].AxisX.Minimum = 0;
+            this.chart_temperature.ChartAreas[0].AxisX.Maximum = 0.417;
+            this.chart_temperature.ChartAreas[0].AxisY.Minimum = -70;
+            this.chart_temperature.ChartAreas[0].AxisY.Maximum = 40;
+            this.chart_temperature.ChartAreas[0].AxisY.Interval = 5;
+            this.chart_temperature.ChartAreas[0].AxisX.MajorGrid.LineColor = Color.LightGray;
+            this.chart_temperature.ChartAreas[0].AxisY.MajorGrid.LineColor = Color.LightGray;
+            this.chart_temperature.ChartAreas[0].AxisX.Title = "Time in [h]";
+            this.chart_temperature.ChartAreas[0].AxisY.Title = "Temperature in [°C]";
+
+            this.chart_pressure.ChartAreas[0].AxisX.LabelStyle.Format = "HH:mm";
+            this.chart_pressure.Series[0].XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.DateTimeOffset;
+            this.chart_pressure.ChartAreas[0].AxisX.Minimum = 0;
+            this.chart_pressure.ChartAreas[0].AxisX.Maximum = 0.417;
+            this.chart_pressure.ChartAreas[0].AxisY.Minimum = 0;
+            this.chart_pressure.ChartAreas[0].AxisY.Maximum = 1200;
+            this.chart_pressure.ChartAreas[0].AxisY.Interval = 100;
+            this.chart_pressure.ChartAreas[0].AxisX.MajorGrid.LineColor = Color.LightGray;
+            this.chart_pressure.ChartAreas[0].AxisY.MajorGrid.LineColor = Color.LightGray;
+            this.chart_pressure.ChartAreas[0].AxisX.Title = "Time in [h]";
+            this.chart_pressure.ChartAreas[0].AxisY.Title = "Pressure in [hPa]";
+        }
         public MainForm()
         {
+            DateTime init_time = DateTime.Now;
+            DateTime empty_dt = new DateTime();
+
             InitializeComponent();
+            init_charts();
+
+            TimeSpan time = DateTime.Now - init_time; 
+            
+            this.chart_temperature.Series[0].Points.AddXY(empty_dt + time, 20);
+            this.chart_temperature.Series[0].Points.AddXY(empty_dt.AddHours(1) + time, 30);
+
+            this.chart_pressure.Series[0].Points.AddXY(empty_dt + time, 20);
+            this.chart_pressure.Series[0].Points.AddXY(empty_dt.AddHours(1) + time, 30);
 
             worker = new BackgroundWorker();
             worker.WorkerReportsProgress = true; //set to true to fire the progress-changed event
