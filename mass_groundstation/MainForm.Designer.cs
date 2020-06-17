@@ -31,6 +31,10 @@ namespace mass_groundstation
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.fontDialog1 = new System.Windows.Forms.FontDialog();
             this.StatusBar = new System.Windows.Forms.StatusStrip();
@@ -60,6 +64,12 @@ namespace mass_groundstation
             this.label_GS_IP = new System.Windows.Forms.Label();
             this.label_EXP_IP = new System.Windows.Forms.Label();
             this.Tab_Camera = new System.Windows.Forms.TabPage();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.button2 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.checkBox_CAM1_LOCK = new System.Windows.Forms.CheckBox();
             this.button_CAM1_STOP = new System.Windows.Forms.Button();
@@ -67,12 +77,16 @@ namespace mass_groundstation
             this.label_CAM1_STATUS = new System.Windows.Forms.Label();
             this.button_CAM1_START = new System.Windows.Forms.Button();
             this.timer_ping_refresh = new System.Windows.Forms.Timer(this.components);
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
+            this.Tab_Experiment = new System.Windows.Forms.TabPage();
+            this.tab_Ambient_Conditions = new System.Windows.Forms.TabPage();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.textBox_current_ambient_temperature = new System.Windows.Forms.TextBox();
+            this.label_amb_temp = new System.Windows.Forms.Label();
+            this.textBox_current_ambient_pressure = new System.Windows.Forms.TextBox();
+            this.label_amb_pres = new System.Windows.Forms.Label();
+            this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.chart2 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.TabControl.SuspendLayout();
             this.Tab_Logs.SuspendLayout();
             this.Tab_Connection.SuspendLayout();
@@ -80,15 +94,22 @@ namespace mass_groundstation
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_TCP_PORT)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_UDP_PORT)).BeginInit();
             this.Tab_Camera.SuspendLayout();
-            this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            this.tab_Ambient_Conditions.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chart2)).BeginInit();
             this.SuspendLayout();
             // 
             // StatusBar
             // 
-            this.StatusBar.Location = new System.Drawing.Point(0, 801);
+            this.StatusBar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.StatusBar.Dock = System.Windows.Forms.DockStyle.None;
+            this.StatusBar.Location = new System.Drawing.Point(-154, 801);
             this.StatusBar.Name = "StatusBar";
-            this.StatusBar.Size = new System.Drawing.Size(1513, 22);
+            this.StatusBar.Size = new System.Drawing.Size(202, 22);
             this.StatusBar.TabIndex = 0;
             this.StatusBar.Text = "StatusBar";
             // 
@@ -135,6 +156,8 @@ namespace mass_groundstation
             this.TabControl.Controls.Add(this.Tab_Logs);
             this.TabControl.Controls.Add(this.Tab_Connection);
             this.TabControl.Controls.Add(this.Tab_Camera);
+            this.TabControl.Controls.Add(this.Tab_Experiment);
+            this.TabControl.Controls.Add(this.tab_Ambient_Conditions);
             this.TabControl.Location = new System.Drawing.Point(0, 0);
             this.TabControl.Name = "TabControl";
             this.TabControl.SelectedIndex = 0;
@@ -417,16 +440,83 @@ namespace mass_groundstation
             this.Tab_Camera.Text = "Camera";
             this.Tab_Camera.UseVisualStyleBackColor = true;
             // 
+            // groupBox2
+            // 
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Controls.Add(this.checkBox1);
+            this.groupBox2.Controls.Add(this.button1);
+            this.groupBox2.Controls.Add(this.label2);
+            this.groupBox2.Controls.Add(this.label3);
+            this.groupBox2.Controls.Add(this.button2);
+            this.groupBox2.Location = new System.Drawing.Point(759, 6);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(740, 72);
+            this.groupBox2.TabIndex = 1;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Camera 2";
+            this.groupBox2.Enter += new System.EventHandler(this.groupBox2_Enter);
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(6, 48);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(77, 17);
+            this.checkBox1.TabIndex = 1;
+            this.checkBox1.Text = "Lock Input";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(114, 19);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(95, 23);
+            this.button1.TabIndex = 3;
+            this.button1.Text = "Stop Recording";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(225, 24);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(40, 13);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "Status:";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.ForeColor = System.Drawing.Color.Red;
+            this.label3.Location = new System.Drawing.Point(271, 24);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(98, 13);
+            this.label3.TabIndex = 1;
+            this.label3.Text = "NOT RECORDING";
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(6, 19);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(102, 23);
+            this.button2.TabIndex = 2;
+            this.button2.Text = "Start Recording";
+            this.button2.UseVisualStyleBackColor = true;
+            // 
             // groupBox1
             // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.groupBox1.Controls.Add(this.checkBox_CAM1_LOCK);
             this.groupBox1.Controls.Add(this.button_CAM1_STOP);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.label_CAM1_STATUS);
             this.groupBox1.Controls.Add(this.button_CAM1_START);
-            this.groupBox1.Location = new System.Drawing.Point(8, 6);
+            this.groupBox1.Location = new System.Drawing.Point(6, 6);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(562, 72);
+            this.groupBox1.Size = new System.Drawing.Size(740, 72);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Camera 1";
@@ -487,67 +577,116 @@ namespace mass_groundstation
             this.timer_ping_refresh.Interval = 60000;
             this.timer_ping_refresh.Tick += new System.EventHandler(this.timer_ping_refresh_Tick);
             // 
-            // groupBox2
+            // Tab_Experiment
             // 
-            this.groupBox2.Controls.Add(this.checkBox1);
-            this.groupBox2.Controls.Add(this.button1);
-            this.groupBox2.Controls.Add(this.label2);
-            this.groupBox2.Controls.Add(this.label3);
-            this.groupBox2.Controls.Add(this.button2);
-            this.groupBox2.Location = new System.Drawing.Point(576, 6);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(562, 72);
-            this.groupBox2.TabIndex = 1;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Camera 2";
-            this.groupBox2.Enter += new System.EventHandler(this.groupBox2_Enter);
+            this.Tab_Experiment.Location = new System.Drawing.Point(4, 22);
+            this.Tab_Experiment.Name = "Tab_Experiment";
+            this.Tab_Experiment.Padding = new System.Windows.Forms.Padding(3);
+            this.Tab_Experiment.Size = new System.Drawing.Size(1505, 772);
+            this.Tab_Experiment.TabIndex = 3;
+            this.Tab_Experiment.Text = "Experiment";
+            this.Tab_Experiment.UseVisualStyleBackColor = true;
             // 
-            // checkBox1
+            // tab_Ambient_Conditions
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(6, 48);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(77, 17);
-            this.checkBox1.TabIndex = 1;
-            this.checkBox1.Text = "Lock Input";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.tab_Ambient_Conditions.Controls.Add(this.groupBox4);
+            this.tab_Ambient_Conditions.Controls.Add(this.groupBox3);
+            this.tab_Ambient_Conditions.Location = new System.Drawing.Point(4, 22);
+            this.tab_Ambient_Conditions.Name = "tab_Ambient_Conditions";
+            this.tab_Ambient_Conditions.Padding = new System.Windows.Forms.Padding(3);
+            this.tab_Ambient_Conditions.Size = new System.Drawing.Size(1505, 772);
+            this.tab_Ambient_Conditions.TabIndex = 4;
+            this.tab_Ambient_Conditions.Text = "Ambient Conditions";
+            this.tab_Ambient_Conditions.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // groupBox3
             // 
-            this.button1.Location = new System.Drawing.Point(114, 19);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(95, 23);
-            this.button1.TabIndex = 3;
-            this.button1.Text = "Stop Recording";
-            this.button1.UseVisualStyleBackColor = true;
+            this.groupBox3.Controls.Add(this.chart1);
+            this.groupBox3.Controls.Add(this.label_amb_temp);
+            this.groupBox3.Controls.Add(this.textBox_current_ambient_temperature);
+            this.groupBox3.Location = new System.Drawing.Point(6, 6);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(740, 763);
+            this.groupBox3.TabIndex = 0;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Temperature";
             // 
-            // label2
+            // groupBox4
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(225, 24);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(40, 13);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "Status:";
+            this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox4.Controls.Add(this.chart2);
+            this.groupBox4.Controls.Add(this.label_amb_pres);
+            this.groupBox4.Controls.Add(this.textBox_current_ambient_pressure);
+            this.groupBox4.Location = new System.Drawing.Point(759, 6);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(740, 763);
+            this.groupBox4.TabIndex = 1;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Pressure";
             // 
-            // label3
+            // textBox_current_ambient_temperature
             // 
-            this.label3.AutoSize = true;
-            this.label3.ForeColor = System.Drawing.Color.Red;
-            this.label3.Location = new System.Drawing.Point(271, 24);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(98, 13);
-            this.label3.TabIndex = 1;
-            this.label3.Text = "NOT RECORDING";
+            this.textBox_current_ambient_temperature.Location = new System.Drawing.Point(116, 17);
+            this.textBox_current_ambient_temperature.Name = "textBox_current_ambient_temperature";
+            this.textBox_current_ambient_temperature.ReadOnly = true;
+            this.textBox_current_ambient_temperature.Size = new System.Drawing.Size(100, 20);
+            this.textBox_current_ambient_temperature.TabIndex = 0;
             // 
-            // button2
+            // label_amb_temp
             // 
-            this.button2.Location = new System.Drawing.Point(6, 19);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(102, 23);
-            this.button2.TabIndex = 2;
-            this.button2.Text = "Start Recording";
-            this.button2.UseVisualStyleBackColor = true;
+            this.label_amb_temp.AutoSize = true;
+            this.label_amb_temp.Location = new System.Drawing.Point(6, 20);
+            this.label_amb_temp.Name = "label_amb_temp";
+            this.label_amb_temp.Size = new System.Drawing.Size(104, 13);
+            this.label_amb_temp.TabIndex = 1;
+            this.label_amb_temp.Text = "Current Temperature";
+            // 
+            // textBox_current_ambient_pressure
+            // 
+            this.textBox_current_ambient_pressure.Location = new System.Drawing.Point(97, 17);
+            this.textBox_current_ambient_pressure.Name = "textBox_current_ambient_pressure";
+            this.textBox_current_ambient_pressure.ReadOnly = true;
+            this.textBox_current_ambient_pressure.Size = new System.Drawing.Size(100, 20);
+            this.textBox_current_ambient_pressure.TabIndex = 0;
+            // 
+            // label_amb_pres
+            // 
+            this.label_amb_pres.AutoSize = true;
+            this.label_amb_pres.Location = new System.Drawing.Point(6, 20);
+            this.label_amb_pres.Name = "label_amb_pres";
+            this.label_amb_pres.Size = new System.Drawing.Size(85, 13);
+            this.label_amb_pres.TabIndex = 1;
+            this.label_amb_pres.Text = "Current Pressure";
+            // 
+            // chart1
+            // 
+            chartArea2.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea2);
+            this.chart1.Location = new System.Drawing.Point(0, 43);
+            this.chart1.Name = "chart1";
+            this.chart1.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Grayscale;
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series2.Name = "Temperature";
+            this.chart1.Series.Add(series2);
+            this.chart1.Size = new System.Drawing.Size(734, 717);
+            this.chart1.TabIndex = 3;
+            this.chart1.Text = "chart1";
+            // 
+            // chart2
+            // 
+            chartArea1.Name = "ChartArea1";
+            this.chart2.ChartAreas.Add(chartArea1);
+            this.chart2.Location = new System.Drawing.Point(6, 43);
+            this.chart2.Name = "chart2";
+            this.chart2.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Grayscale;
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series1.Name = "Pressure";
+            this.chart2.Series.Add(series1);
+            this.chart2.Size = new System.Drawing.Size(734, 717);
+            this.chart2.TabIndex = 4;
+            this.chart2.Text = "chart2";
             // 
             // MainForm
             // 
@@ -571,10 +710,17 @@ namespace mass_groundstation
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_TCP_PORT)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_UDP_PORT)).EndInit();
             this.Tab_Camera.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.tab_Ambient_Conditions.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chart2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -623,6 +769,16 @@ namespace mass_groundstation
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.TabPage Tab_Experiment;
+        private System.Windows.Forms.TabPage tab_Ambient_Conditions;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.Label label_amb_pres;
+        private System.Windows.Forms.TextBox textBox_current_ambient_pressure;
+        private System.Windows.Forms.Label label_amb_temp;
+        private System.Windows.Forms.TextBox textBox_current_ambient_temperature;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chart2;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
     }
 }
 
