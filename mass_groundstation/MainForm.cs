@@ -40,6 +40,8 @@ namespace mass_groundstation
             this.chart_temperature.ChartAreas[0].AxisY.MajorGrid.LineColor = Color.LightGray;
             this.chart_temperature.ChartAreas[0].AxisX.Title = "Time in [h]";
             this.chart_temperature.ChartAreas[0].AxisY.Title = "Temperature in [°C]";
+            this.chart_temperature.Series[0].Color = Color.Red;
+            this.chart_temperature.Series[1].Color = Color.Blue;
 
             this.chart_pressure.ChartAreas[0].AxisX.LabelStyle.Format = "HH:mm";
             this.chart_pressure.Series[0].XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.DateTimeOffset;
@@ -52,6 +54,7 @@ namespace mass_groundstation
             this.chart_pressure.ChartAreas[0].AxisY.MajorGrid.LineColor = Color.LightGray;
             this.chart_pressure.ChartAreas[0].AxisX.Title = "Time in [h]";
             this.chart_pressure.ChartAreas[0].AxisY.Title = "Pressure in [hPa]";
+            
         }
         public MainForm()
         {
@@ -63,11 +66,15 @@ namespace mass_groundstation
 
             TimeSpan time = DateTime.Now - init_time; 
             
-            this.chart_temperature.Series[0].Points.AddXY(empty_dt + time, 20);
-            this.chart_temperature.Series[0].Points.AddXY(empty_dt.AddHours(1) + time, 30);
+            this.chart_temperature.Series["Temperature_Inside"].Points.AddXY(empty_dt + time, 20);
+            this.chart_temperature.Series["Temperature_Inside"].Points.AddXY(empty_dt.AddHours(1) + time, 30);
 
-            this.chart_pressure.Series[0].Points.AddXY(empty_dt + time, 20);
-            this.chart_pressure.Series[0].Points.AddXY(empty_dt.AddHours(1) + time, 30);
+            this.chart_temperature.Series["Temperature_Outside"].Points.AddXY(empty_dt + time, 30);
+            this.chart_temperature.Series["Temperature_Outside"].Points.AddXY(empty_dt.AddHours(1) + time, 10);
+
+            this.chart_pressure.Series["Pressure"].Points.AddXY(empty_dt + time, 20);
+            this.chart_pressure.Series["Pressure"].Points.AddXY(empty_dt.AddHours(1) + time, 30);
+
 
             worker = new BackgroundWorker();
             worker.WorkerReportsProgress = true; //set to true to fire the progress-changed event
