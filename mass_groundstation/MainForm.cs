@@ -293,6 +293,8 @@ namespace mass_groundstation
             label_CAM1_STATUS.ForeColor = Color.Red;
         }
 
+
+
         private void checkBox_CAM1_LOCK_CheckedChanged(object sender, EventArgs e)
         {
             if(checkBox_CAM1_LOCK.Checked)
@@ -307,9 +309,134 @@ namespace mass_groundstation
             }
         }
 
-        private void groupBox2_Enter(object sender, EventArgs e)
+        private void button_CAM2_START_Click(object sender, EventArgs e)
+        {
+            label_CAM2_STATUS.Text = "RECORDING";
+            label_CAM2_STATUS.ForeColor = Color.Green;
+        }
+
+        private void button_CAM2_STOP_Click(object sender, EventArgs e)
+        {
+            label_CAM2_STATUS.Text = "NOT RECORDING";
+            label_CAM2_STATUS.ForeColor = Color.Red;
+        }
+
+
+
+        private void checkBox_CAM2_LOCK_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox_CAM2_LOCK.Checked)
+            {
+                button_CAM2_START.Enabled = false;
+                button_CAM2_STOP.Enabled = false;
+            }
+            else
+            {
+                button_CAM2_START.Enabled = true;
+                button_CAM2_STOP.Enabled = true;
+            }
+        }
+
+        private void checkBox_HDRM_Inside_Lock_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox_HDRM_Inside_Lock.Checked)
+                button_HDRM_Inside_Release.Enabled = false;
+            else
+                button_HDRM_Inside_Release.Enabled = true;
+
+        }
+
+        private void checkBox_HDRM_Outside_Lock_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox_HDRM_Outside_Lock.Checked)           
+                button_HDRM_Outside_Release.Enabled = false;         
+            else            
+                button_HDRM_Outside_Release.Enabled = true;           
+        }
+
+        private void label20_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void label21_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void checkBox_pneu_manual_override_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox_pneu_manual_override.Checked)
+            {
+                button_valve_pressure_inside.Enabled = true;
+                button_valve_pressure_outside.Enabled = true;
+                button_valve_ambient_inside.Enabled = true;
+                button_valve_ambient_outside.Enabled = true;
+            }
+            else
+            {
+                button_valve_pressure_inside.Enabled = false;
+                button_valve_pressure_outside.Enabled = false;
+                button_valve_ambient_inside.Enabled = false;
+                button_valve_ambient_outside.Enabled = false;
+            }
+        }
+
+        private void checkBox_Inflation_Inside_Lock_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox_Inflation_Inside_Lock.Checked)
+            {
+                button_Inflation_Inside_Start.Enabled = false;
+                button_Inflation_Inside_Stop.Enabled = false;
+            }
+            else
+            {
+                button_Inflation_Inside_Start.Enabled = true;
+                button_Inflation_Inside_Stop.Enabled = true;
+            }
+             
+        }
+
+        private void checkBox_Inflation_Outside_Lock_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox_Inflation_Outside_Lock.Checked)
+            {
+                button_Inflation_Outside_Start.Enabled = false;
+                button_Inflation_Outside_Stop.Enabled = false;
+            }    
+            else
+            { 
+                button_Inflation_Outside_Start.Enabled = true;
+                button_Inflation_Outside_Stop.Enabled = true;
+            }
+        }
+
+        private void checkBox_UV_ST2_Lock_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox_UV_ST2_Lock.Checked)
+            {
+                button_UV_ST2_ON.Enabled = false;
+                button_UV_ST2_OFF.Enabled = false;
+            }
+            else
+            {
+                button_UV_ST2_ON.Enabled = true;
+                button_UV_ST2_OFF.Enabled = true;
+            }
+        }
+
+        private void checkBox_UV_ST1_Lock_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox_UV_ST1_Lock.Checked)
+            {
+                button_UV_ST1_ON.Enabled = false;
+                button_UV_ST1_OFF.Enabled = false;
+            }
+            else
+            {
+                button_UV_ST1_ON.Enabled = true;
+                button_UV_ST1_OFF.Enabled = true;
+            }
         }
     }
 }
