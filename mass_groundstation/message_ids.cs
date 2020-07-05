@@ -10,10 +10,11 @@ namespace mass_groundstation
     {
         //System Commands
         public const byte OK = 1;
-        public const byte TCP_UDP_PING = 2;
+        public const byte TCP_PING = 2;
         public const byte TCP_PONG = 3;
         public const byte UDP_PONG = 4;
         public const byte RESET = 5;
+        public const byte PING = 6;
         public const byte ERROR = 254;
 
         //Experiment Commands

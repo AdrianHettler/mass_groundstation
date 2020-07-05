@@ -32,11 +32,11 @@ namespace mass_groundstation
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea6 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series9 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.fontDialog1 = new System.Windows.Forms.FontDialog();
             this.StatusBar = new System.Windows.Forms.StatusStrip();
             this.OutputTextBox = new System.Windows.Forms.RichTextBox();
@@ -1315,6 +1315,7 @@ namespace mass_groundstation
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox2.TabIndex = 0;
             this.pictureBox2.TabStop = false;
+            this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
             // 
             // tab_Ambient_Conditions
             // 
@@ -1343,17 +1344,17 @@ namespace mass_groundstation
             // 
             // chart_pressure
             // 
-            chartArea3.Name = "ChartArea1";
-            this.chart_pressure.ChartAreas.Add(chartArea3);
+            chartArea5.Name = "ChartArea1";
+            this.chart_pressure.ChartAreas.Add(chartArea5);
             this.chart_pressure.Location = new System.Drawing.Point(6, 43);
             this.chart_pressure.Name = "chart_pressure";
             this.chart_pressure.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.None;
             this.chart_pressure.PaletteCustomColors = new System.Drawing.Color[] {
         System.Drawing.Color.Black};
-            series4.ChartArea = "ChartArea1";
-            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series4.Name = "Pressure";
-            this.chart_pressure.Series.Add(series4);
+            series7.ChartArea = "ChartArea1";
+            series7.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series7.Name = "Pressure";
+            this.chart_pressure.Series.Add(series7);
             this.chart_pressure.Size = new System.Drawing.Size(734, 717);
             this.chart_pressure.TabIndex = 4;
             this.chart_pressure.Text = "chart2";
@@ -1408,22 +1409,22 @@ namespace mass_groundstation
             // 
             // chart_temperature
             // 
-            chartArea4.BorderColor = System.Drawing.Color.DarkGray;
-            chartArea4.Name = "ChartArea1";
-            this.chart_temperature.ChartAreas.Add(chartArea4);
+            chartArea6.BorderColor = System.Drawing.Color.DarkGray;
+            chartArea6.Name = "ChartArea1";
+            this.chart_temperature.ChartAreas.Add(chartArea6);
             this.chart_temperature.Location = new System.Drawing.Point(6, 43);
             this.chart_temperature.Name = "chart_temperature";
             this.chart_temperature.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.None;
             this.chart_temperature.PaletteCustomColors = new System.Drawing.Color[] {
         System.Drawing.Color.Black};
-            series5.ChartArea = "ChartArea1";
-            series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series5.Name = "Temperature_Inside";
-            series6.ChartArea = "ChartArea1";
-            series6.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series6.Name = "Temperature_Outside";
-            this.chart_temperature.Series.Add(series5);
-            this.chart_temperature.Series.Add(series6);
+            series8.ChartArea = "ChartArea1";
+            series8.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series8.Name = "Temperature_Inside";
+            series9.ChartArea = "ChartArea1";
+            series9.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series9.Name = "Temperature_Outside";
+            this.chart_temperature.Series.Add(series8);
+            this.chart_temperature.Series.Add(series9);
             this.chart_temperature.Size = new System.Drawing.Size(728, 717);
             this.chart_temperature.TabIndex = 3;
             this.chart_temperature.Text = "chart1";
