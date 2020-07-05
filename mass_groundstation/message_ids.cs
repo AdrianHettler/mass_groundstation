@@ -26,6 +26,7 @@ namespace mass_groundstation
 
         //Downlink
         public const byte DATA_ENVIROMENTAL = 100;
-
+        public const byte DATA_POWER = 101;
+        public const byte DATA_PNEUMATICS = 102;
     }
 }

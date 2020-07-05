@@ -94,17 +94,64 @@ namespace mass_groundstation
             {
                 try
                 {
-                    Byte[] receiveBytes = udp_client.Receive(ref udp_endpoint);
+                    Byte[] received_bytes = udp_client.Receive(ref udp_endpoint);
                     //string returnData = Encoding.ASCII.GetString(receiveBytes);
 
+                    switch (received_bytes[0])
+                    {
+                        case message_ids.DATA_ENVIROMENTAL:
+                            float ambient_temp_inside = BitConverter.ToSingle(received_bytes, 1);
+                            float ambient_temp_outside = BitConverter.ToSingle(received_bytes, 5);
+                            float ambient_pressure = BitConverter.ToSingle(received_bytes, 9);
 
-                    //    OutputTextBox.Invoke((MethodInvoker)delegate
-                    //{
-                    //    OutputTextBox_add_output_message(returnData.ToString());
-                    //});
+                            OutputTextBox.Invoke((MethodInvoker)delegate
+                            {
+                                textBox_current_ambient_temperature_inside.Text = ambient_temp_inside.ToString() + " °C";
+                                textBox_current_ambient_temperature_outside.Text = ambient_temp_outside.ToString() + " °C";
+                                textBox_current_ambient_pressure.Text = ambient_pressure.ToString() + " hPa";
+                            });
 
+                        break;
+
+                        case message_ids.DATA_POWER:
+                            float voltage_bexus = BitConverter.ToSingle(received_bytes, 1);
+                            float voltage_extra = BitConverter.ToSingle(received_bytes, 5);
+                            float current_bexus = BitConverter.ToSingle(received_bytes, 9);
+                            float current_extra = BitConverter.ToSingle(received_bytes, 13);
+                            float power_bexus = voltage_bexus * current_bexus;
+                            float power_extra = voltage_extra * current_extra;
+
+                            OutputTextBox.Invoke((MethodInvoker)delegate
+                            {
+                                textBox_BEXUS_Voltage.Text = voltage_bexus.ToString() + " V";
+                                textBox_EXTRA_Voltage.Text = voltage_extra.ToString() + " V";
+                                textBox_BEXUS_Current.Text = current_bexus.ToString() + " A";
+                                textBox_EXTRA_Current.Text = current_extra.ToString() + " A";
+                                textBox_BEXUS_Power.Text = power_bexus.ToString() + " W";
+                                textBox_EXTRA_Power.Text = power_extra.ToString() + " W";
+
+                            });
+
+                            break;
+
+                        case message_ids.DATA_PNEUMATICS:
+
+                            float pressure_tank = BitConverter.ToSingle(received_bytes, 1);
+                            float pressure_outside_structures = BitConverter.ToSingle(received_bytes, 5);
+                            float pressure_inside_structures = BitConverter.ToSingle(received_bytes, 9);
+
+                            OutputTextBox.Invoke((MethodInvoker)delegate
+                            {
+                                textBox_PNEU_Tank.Text = pressure_tank.ToString() + " hPa";
+                                textBox_PNEU_Outside_Structures.Text = pressure_outside_structures.ToString() + " hPa";
+                                textBox_PNEU_Inside_Structures.Text = pressure_inside_structures.ToString() + " hPa";
+                            });
+
+                            break;
+
+
+                    }
                 }
-
                 catch (Exception except)
                 {
                     OutputTextBox.Invoke((MethodInvoker)delegate
