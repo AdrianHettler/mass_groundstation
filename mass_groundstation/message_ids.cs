@@ -18,16 +18,21 @@ namespace mass_groundstation
         public const byte ERROR = 254;
 
         //Experiment Commands
-        public const byte EXP_LIFT_OFF = 20;
-        public const byte EXP_START_INFLATION = 21;
-        public const byte EXP_UV_ON = 22;
-        public const byte EXP_UV_OFF = 23;
-        public const byte EXP_CAM_START = 21;
-        public const byte EXP_CAM_STOP = 21;
+        public const byte EXP_INIT = 20;
+        public const byte EXP_RELEASE_STRUCTURES = 21;
+        public const byte EXP_START_INFLATION = 22;
+        public const byte EXP_UV_ON = 23;
+        public const byte EXP_UV_OFF = 24;
+        public const byte EXP_CAM_START = 25;
+        public const byte EXP_CAM_STOP = 26;
+        public const byte EXP_VALVES_MANUAL_ON = 27;
+        public const byte EXP_VALVES_MANUAL_OFF = 28;
+        public const byte EXP_STOP_INFLATION = 29;
 
         //Downlink
         public const byte DATA_ENVIROMENTAL = 100;
         public const byte DATA_POWER = 101;
         public const byte DATA_PNEUMATICS = 102;
+
     }
 }

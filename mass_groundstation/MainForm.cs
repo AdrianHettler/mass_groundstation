@@ -24,7 +24,7 @@ namespace mass_groundstation
         public int data_size;
     }
 
-   
+
 
     public partial class MainForm : Form
     {
@@ -34,17 +34,20 @@ namespace mass_groundstation
 
         UdpClient udp_client;
         IPEndPoint udp_endpoint;
-  
-        List<tcp_command> tcp_command_list = new List<tcp_command>();
-     
 
+        List<tcp_command> tcp_command_list = new List<tcp_command>();
+
+
+        bool valve_1 = false, valve_2 = false, valve_3 = false, valve_4 = false;
+        DateTime init_time = DateTime.Now;
+        DateTime empty_dt = new DateTime();
 
         public void init_charts()
         {
             this.chart_temperature.ChartAreas[0].AxisX.LabelStyle.Format = "HH:mm";
             this.chart_temperature.Series[0].XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.DateTimeOffset;
             this.chart_temperature.ChartAreas[0].AxisX.Minimum = 0;
-            this.chart_temperature.ChartAreas[0].AxisX.Maximum = 0.417;
+            this.chart_temperature.ChartAreas[0].AxisX.Maximum = 0.0417;
             this.chart_temperature.ChartAreas[0].AxisY.Minimum = -70;
             this.chart_temperature.ChartAreas[0].AxisY.Maximum = 40;
             this.chart_temperature.ChartAreas[0].AxisY.Interval = 5;
@@ -66,24 +69,20 @@ namespace mass_groundstation
             this.chart_pressure.ChartAreas[0].AxisY.MajorGrid.LineColor = Color.LightGray;
             this.chart_pressure.ChartAreas[0].AxisX.Title = "Time in [h]";
             this.chart_pressure.ChartAreas[0].AxisY.Title = "Pressure in [hPa]";
-            
+
         }
         public MainForm()
         {
-            DateTime init_time = DateTime.Now;
-            DateTime empty_dt = new DateTime();
+           
 
             InitializeComponent();
             init_charts();
 
-            TimeSpan time = DateTime.Now - init_time; 
-            
-            this.chart_temperature.Series["Temperature_Inside"].Points.AddXY(empty_dt + time, 20);
-            this.chart_temperature.Series["Temperature_Inside"].Points.AddXY(empty_dt.AddHours(1) + time, 30);
-            this.chart_temperature.Series["Temperature_Outside"].Points.AddXY(empty_dt + time, 30);
-            this.chart_temperature.Series["Temperature_Outside"].Points.AddXY(empty_dt.AddHours(1) + time, 10);
-            this.chart_pressure.Series["Pressure"].Points.AddXY(empty_dt + time, 20);
-            this.chart_pressure.Series["Pressure"].Points.AddXY(empty_dt.AddHours(1) + time, 30);
+           
+            //this.chart_temperature.Series["Temperature_Outside"].Points.AddXY(empty_dt + time, 30);
+           // this.chart_temperature.Series["Temperature_Outside"].Points.AddXY(empty_dt.AddHours(1) + time, 10);
+           // this.chart_pressure.Series["Pressure"].Points.AddXY(empty_dt + time, 20);
+           // this.chart_pressure.Series["Pressure"].Points.AddXY(empty_dt.AddHours(1) + time, 30);
 
 
             Thread thdUDPServer = new Thread(new ThreadStart(udp_server_thread));
@@ -178,11 +177,158 @@ namespace mass_groundstation
                                     }
                                     found = true;
                                     break;
+
+                                case message_ids.EXP_RELEASE_STRUCTURES:
+                                    if (tcp_stream.CanWrite)
+                                    {
+                                        byte[] message = { message_ids.EXP_RELEASE_STRUCTURES, tcp_command_list[0].data[0] };
+
+                                        tcp_stream.Write(message, 0, message.Length);
+
+                                        if (tcp_stream.CanRead)
+                                        {
+                                            byte[] message_receive = new byte[tcp_client.ReceiveBufferSize];
+                                            int bytesRead = tcp_stream.Read(message_receive, 0, tcp_client.ReceiveBufferSize);
+
+                                            if (message_receive[0] == message_ids.OK)
+                                                OutputTextBox_add_output_message("Exp. Release Structure Command SUCCESS", false);
+                                            else
+                                                OutputTextBox_add_output_message("Exp. Release Structure Command FAIL", false);
+                                        }
+                                    }
+                                    found = true;
+                                    break;
+
+                                case message_ids.EXP_UV_ON:
+                                    if (tcp_stream.CanWrite)
+                                    {
+                                        byte[] message = { message_ids.EXP_UV_ON, tcp_command_list[0].data[0] };
+
+                                        tcp_stream.Write(message, 0, message.Length);
+
+                                        if (tcp_stream.CanRead)
+                                        {
+                                            byte[] message_receive = new byte[tcp_client.ReceiveBufferSize];
+                                            int bytesRead = tcp_stream.Read(message_receive, 0, tcp_client.ReceiveBufferSize);
+
+                                            if (message_receive[0] == message_ids.OK)
+                                                OutputTextBox_add_output_message("Exp. UV ON SUCCESS", false);
+                                            else
+                                                OutputTextBox_add_output_message("Exp. UV ON FAIL", false);
+                                        }
+                                    }
+                                    found = true;
+                                    break;
+
+                                case message_ids.EXP_UV_OFF:
+                                    if (tcp_stream.CanWrite)
+                                    {
+                                        byte[] message = { message_ids.EXP_UV_OFF, tcp_command_list[0].data[0] };
+
+                                        tcp_stream.Write(message, 0, message.Length);
+
+                                        if (tcp_stream.CanRead)
+                                        {
+                                            byte[] message_receive = new byte[tcp_client.ReceiveBufferSize];
+                                            int bytesRead = tcp_stream.Read(message_receive, 0, tcp_client.ReceiveBufferSize);
+
+                                            if (message_receive[0] == message_ids.OK)
+                                                OutputTextBox_add_output_message("Exp. UV OFF SUCCESS", false);
+                                            else
+                                                OutputTextBox_add_output_message("Exp. UV OFF FAIL", false);
+                                        }
+                                    }
+                                    found = true;
+                                    break;
+
+                                case message_ids.EXP_VALVES_MANUAL_ON:
+                                    if (tcp_stream.CanWrite)
+                                    {
+                                        byte[] message = { message_ids.EXP_VALVES_MANUAL_ON, tcp_command_list[0].data[0] };
+
+                                        tcp_stream.Write(message, 0, message.Length);
+
+                                        if (tcp_stream.CanRead)
+                                        {
+                                            byte[] message_receive = new byte[tcp_client.ReceiveBufferSize];
+                                            int bytesRead = tcp_stream.Read(message_receive, 0, tcp_client.ReceiveBufferSize);
+
+                                            if (message_receive[0] == message_ids.OK)
+                                                OutputTextBox_add_output_message("Exp. VALVES_MANUAL_ON SUCCESS", false);
+                                            else
+                                                OutputTextBox_add_output_message("Exp. VALVES_MANUAL_ON FAIL", false);
+                                        }
+                                    }
+                                    found = true;
+                                    break;
+
+                                case message_ids.EXP_VALVES_MANUAL_OFF:
+                                    if (tcp_stream.CanWrite)
+                                    {
+                                        byte[] message = { message_ids.EXP_VALVES_MANUAL_OFF, tcp_command_list[0].data[0] };
+
+                                        tcp_stream.Write(message, 0, message.Length);
+
+                                        if (tcp_stream.CanRead)
+                                        {
+                                            byte[] message_receive = new byte[tcp_client.ReceiveBufferSize];
+                                            int bytesRead = tcp_stream.Read(message_receive, 0, tcp_client.ReceiveBufferSize);
+
+                                            if (message_receive[0] == message_ids.OK)
+                                                OutputTextBox_add_output_message("Exp. VALVES_MANUAL_OFF SUCCESS", false);
+                                            else
+                                                OutputTextBox_add_output_message("Exp. VALVES_MANUAL_OFF FAIL", false);
+                                        }
+                                    }
+                                    found = true;
+                                    break;
+
+                                case message_ids.EXP_START_INFLATION:
+                                    if (tcp_stream.CanWrite)
+                                    {
+                                        byte[] message = { message_ids.EXP_START_INFLATION, tcp_command_list[0].data[0] };
+
+                                        tcp_stream.Write(message, 0, message.Length);
+
+                                        if (tcp_stream.CanRead)
+                                        {
+                                            byte[] message_receive = new byte[tcp_client.ReceiveBufferSize];
+                                            int bytesRead = tcp_stream.Read(message_receive, 0, tcp_client.ReceiveBufferSize);
+
+                                            if (message_receive[0] == message_ids.OK)
+                                                OutputTextBox_add_output_message("Exp. EXP_START_INFLATION SUCCESS", false);
+                                            else
+                                                OutputTextBox_add_output_message("Exp. EXP_START_INFLATION FAIL", false);
+                                        }
+                                    }
+                                    found = true;
+                                    break;
+
+                                case message_ids.EXP_STOP_INFLATION:
+                                    if (tcp_stream.CanWrite)
+                                    {
+                                        byte[] message = { message_ids.EXP_STOP_INFLATION, tcp_command_list[0].data[0] };
+
+                                        tcp_stream.Write(message, 0, message.Length);
+
+                                        if (tcp_stream.CanRead)
+                                        {
+                                            byte[] message_receive = new byte[tcp_client.ReceiveBufferSize];
+                                            int bytesRead = tcp_stream.Read(message_receive, 0, tcp_client.ReceiveBufferSize);
+
+                                            if (message_receive[0] == message_ids.OK)
+                                                OutputTextBox_add_output_message("Exp. EXP_STOP_INFLATION SUCCESS", false);
+                                            else
+                                                OutputTextBox_add_output_message("Exp. EXP_STOP_INFLATION FAIL", false);
+                                        }
+                                    }
+                                    found = true;
+                                    break;
                             }
 
                             if (found)
                             {
-                                tcp_command_list.RemoveAt(0);
+                                tcp_command_list.RemoveAt(0); // remove the first entry
                             }
                         }
                         catch (Exception except)
@@ -191,7 +337,7 @@ namespace mass_groundstation
                             tcp_connected = false;
                             OutputTextBox_add_output_message("TCP READ/WRITE ERROR - Exception: " + except.Message, false);
                             Helper.change_label(label_TCP_STATUS_OUTPUT, "NOT CONNECTED", Color.Red, false);
-                        }                       
+                        }
                     }
                 }
                 catch (Exception except)
@@ -220,6 +366,9 @@ namespace mass_groundstation
                     {
                         case message_ids.DATA_ENVIROMENTAL:
                             float ambient_temp_inside = BitConverter.ToSingle(received_bytes, 1);
+
+                            TimeSpan time = DateTime.Now - init_time;                          
+
                             float ambient_temp_outside = BitConverter.ToSingle(received_bytes, 5);
                             float ambient_pressure = BitConverter.ToSingle(received_bytes, 9);
 
@@ -228,9 +377,11 @@ namespace mass_groundstation
                                 textBox_current_ambient_temperature_inside.Text = ambient_temp_inside.ToString() + " °C";
                                 textBox_current_ambient_temperature_outside.Text = ambient_temp_outside.ToString() + " °C";
                                 textBox_current_ambient_pressure.Text = ambient_pressure.ToString() + " hPa";
+                                this.chart_temperature.Series["Temperature_Inside"].Points.AddXY(empty_dt + time, ambient_temp_inside);
+                                this.chart_pressure.Series["Pressure"].Points.AddXY(empty_dt + time, ambient_pressure);
                             });
 
-                        break;
+                            break;
 
                         case message_ids.DATA_POWER:
                             float voltage_bexus = BitConverter.ToSingle(received_bytes, 1);
@@ -287,7 +438,6 @@ namespace mass_groundstation
             OutputTextBox.ScrollToCaret();   // scroll it automatically     
         }
 
-
         public void OutputTextBox_add_output_message(string text, bool GUI_thread = true, bool add_timestamp = true, bool log = true)
         {
             string output_text = DateTime.Now.ToString("HH:mm:ss  -  ") + text; // add time to output
@@ -297,7 +447,7 @@ namespace mass_groundstation
                 Helper.write_log(output_text);
             }
 
-            if(GUI_thread)
+            if (GUI_thread)
             {
                 OutputTextBox.AppendText(output_text);  // add text to OutputTextBox
                 OutputTextBox.AppendText(Environment.NewLine); // new line
@@ -391,7 +541,7 @@ namespace mass_groundstation
 
         private void checkBox_CAM1_LOCK_CheckedChanged(object sender, EventArgs e)
         {
-            if(checkBox_CAM1_LOCK.Checked)
+            if (checkBox_CAM1_LOCK.Checked)
             {
                 button_CAM1_START.Enabled = false;
                 button_CAM1_STOP.Enabled = false;
@@ -442,21 +592,13 @@ namespace mass_groundstation
 
         private void checkBox_HDRM_Outside_Lock_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBox_HDRM_Outside_Lock.Checked)           
-                button_HDRM_Outside_Release.Enabled = false;         
-            else            
-                button_HDRM_Outside_Release.Enabled = true;           
+            if (checkBox_HDRM_Outside_Lock.Checked)
+                button_HDRM_Outside_Release.Enabled = false;
+            else
+                button_HDRM_Outside_Release.Enabled = true;
         }
 
-        private void label20_Click(object sender, EventArgs e)
-        {
 
-        }
-
-        private void label21_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void checkBox_pneu_manual_override_CheckedChanged(object sender, EventArgs e)
         {
@@ -488,7 +630,7 @@ namespace mass_groundstation
                 button_Inflation_Inside_Start.Enabled = true;
                 button_Inflation_Inside_Stop.Enabled = true;
             }
-             
+
         }
 
         private void checkBox_Inflation_Outside_Lock_CheckedChanged(object sender, EventArgs e)
@@ -497,9 +639,9 @@ namespace mass_groundstation
             {
                 button_Inflation_Outside_Start.Enabled = false;
                 button_Inflation_Outside_Stop.Enabled = false;
-            }    
+            }
             else
-            { 
+            {
                 button_Inflation_Outside_Start.Enabled = true;
                 button_Inflation_Outside_Stop.Enabled = true;
             }
@@ -533,10 +675,172 @@ namespace mass_groundstation
             }
         }
 
-        private void pictureBox2_Click(object sender, EventArgs e)
+        private void button_HDRM_Inside_Release_Click(object sender, EventArgs e)
+        {
+            tcp_command command = new tcp_command();
+            command.message_id = message_ids.EXP_RELEASE_STRUCTURES;
+            command.data = new byte[1];
+            command.data[0] = 1;
+            command.data_size = 1;
+            tcp_command_list.Add(command);
+        }
+
+        private void button_HDRM_Outside_Release_Click(object sender, EventArgs e)
+        {
+            tcp_command command = new tcp_command();
+            command.message_id = message_ids.EXP_RELEASE_STRUCTURES;
+            command.data = new byte[1];
+            command.data[0] = 2;
+            command.data_size = 1;
+            tcp_command_list.Add(command);
+        }
+
+        private void button_UV_ST1_ON_Click(object sender, EventArgs e)
+        {
+            tcp_command command = new tcp_command();
+            command.message_id = message_ids.EXP_UV_ON;
+            command.data = new byte[1];
+            command.data[0] = 1;
+            command.data_size = 1;
+            tcp_command_list.Add(command);
+        }
+
+        private void button_valve_pressure_outside_Click(object sender, EventArgs e)
+        {
+            valve_3 = !valve_3;
+            tcp_command command = new tcp_command();
+
+            if (valve_3)
+                command.message_id = message_ids.EXP_VALVES_MANUAL_ON;
+            else
+                command.message_id = message_ids.EXP_VALVES_MANUAL_OFF;
+
+            command.data = new byte[1];
+            command.data[0] = 3;
+            command.data_size = 1;
+            tcp_command_list.Add(command);
+        }
+
+        private void button_valve_pressure_inside_Click(object sender, EventArgs e)
+        {
+            valve_1 = !valve_1;
+            tcp_command command = new tcp_command();
+
+            if (valve_1)
+                command.message_id = message_ids.EXP_VALVES_MANUAL_ON;
+            else
+                command.message_id = message_ids.EXP_VALVES_MANUAL_OFF;
+
+            command.data = new byte[1];
+            command.data[0] = 1;
+            command.data_size = 1;
+            tcp_command_list.Add(command);         
+        }
+
+        private void button_valve_ambient_inside_Click(object sender, EventArgs e)
+        {
+            valve_2 = !valve_2;
+            tcp_command command = new tcp_command();
+
+            if (valve_2)
+                command.message_id = message_ids.EXP_VALVES_MANUAL_ON;
+            else
+                command.message_id = message_ids.EXP_VALVES_MANUAL_OFF;
+
+            command.data = new byte[1];
+            command.data[0] = 2;
+            command.data_size = 1;
+            tcp_command_list.Add(command);
+        }
+
+        private void button_valve_ambient_outside_Click(object sender, EventArgs e)
+        {
+            valve_4 = !valve_4;
+            tcp_command command = new tcp_command();
+
+            if (valve_4)
+                command.message_id = message_ids.EXP_VALVES_MANUAL_ON;
+            else
+                command.message_id = message_ids.EXP_VALVES_MANUAL_OFF;
+
+            command.data = new byte[1];
+            command.data[0] = 4;
+            command.data_size = 1;
+            tcp_command_list.Add(command);
+        }
+
+        private void button_Inflation_Inside_Start_Click(object sender, EventArgs e)
         {
 
+            tcp_command command = new tcp_command();
+            command.message_id = message_ids.EXP_START_INFLATION;
+            command.data = new byte[1];
+            command.data[0] = 1;
+            command.data_size = 1;
+            tcp_command_list.Add(command);       
         }
+
+        private void button_Inflation_Inside_Stop_Click(object sender, EventArgs e)
+        {
+            tcp_command command = new tcp_command();
+            command.message_id = message_ids.EXP_STOP_INFLATION;
+            command.data = new byte[1];
+            command.data[0] = 1;
+            command.data_size = 1;
+            tcp_command_list.Add(command);
+        }
+
+        private void button_Inflation_Outside_Start_Click(object sender, EventArgs e)
+        {
+            tcp_command command = new tcp_command();
+            command.message_id = message_ids.EXP_START_INFLATION;
+            command.data = new byte[1];
+            command.data[0] = 2;
+            command.data_size = 1;
+            tcp_command_list.Add(command);
+        }
+
+        private void button_Inflation_Outside_Stop_Click(object sender, EventArgs e)
+        {
+            tcp_command command = new tcp_command();
+            command.message_id = message_ids.EXP_STOP_INFLATION;
+            command.data = new byte[1];
+            command.data[0] = 2;
+            command.data_size = 1;
+            tcp_command_list.Add(command);
+        }
+
+        private void button_UV_ST1_OFF_Click(object sender, EventArgs e)
+        {
+            tcp_command command = new tcp_command();
+            command.message_id = message_ids.EXP_UV_OFF;
+            command.data = new byte[1];
+            command.data[0] = 1;
+            command.data_size = 1;
+            tcp_command_list.Add(command);
+        }
+
+        private void button_UV_ST2_ON_Click(object sender, EventArgs e)
+        {
+            tcp_command command = new tcp_command();
+            command.message_id = message_ids.EXP_UV_ON;
+            command.data = new byte[1];
+            command.data[0] = 2;
+            command.data_size = 1;
+            tcp_command_list.Add(command);
+        }
+
+        private void button_UV_ST2_OFF_Click(object sender, EventArgs e)
+        {
+            tcp_command command = new tcp_command();
+            command.message_id = message_ids.EXP_UV_OFF;
+            command.data = new byte[1];
+            command.data[0] = 2;
+            command.data_size = 1;
+            tcp_command_list.Add(command);
+        }
+
+    
     }
 }
 

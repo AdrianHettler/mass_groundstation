@@ -32,11 +32,11 @@ namespace mass_groundstation
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea6 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series9 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea7 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series10 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea8 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series11 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series12 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.fontDialog1 = new System.Windows.Forms.FontDialog();
             this.StatusBar = new System.Windows.Forms.StatusStrip();
             this.OutputTextBox = new System.Windows.Forms.RichTextBox();
@@ -116,6 +116,10 @@ namespace mass_groundstation
             this.textBox_BEXUS_Voltage = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.label17 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
             this.button_valve_ambient_inside = new System.Windows.Forms.Button();
             this.button_valve_ambient_outside = new System.Windows.Forms.Button();
             this.button_valve_pressure_outside = new System.Windows.Forms.Button();
@@ -719,6 +723,7 @@ namespace mass_groundstation
             this.button_Inflation_Outside_Stop.TabIndex = 7;
             this.button_Inflation_Outside_Stop.Text = "Inflation Stop Outside";
             this.button_Inflation_Outside_Stop.UseVisualStyleBackColor = true;
+            this.button_Inflation_Outside_Stop.Click += new System.EventHandler(this.button_Inflation_Outside_Stop_Click);
             // 
             // button_Inflation_Inside_Stop
             // 
@@ -729,6 +734,7 @@ namespace mass_groundstation
             this.button_Inflation_Inside_Stop.TabIndex = 6;
             this.button_Inflation_Inside_Stop.Text = "Inflation Stop Inside";
             this.button_Inflation_Inside_Stop.UseVisualStyleBackColor = true;
+            this.button_Inflation_Inside_Stop.Click += new System.EventHandler(this.button_Inflation_Inside_Stop_Click);
             // 
             // button_Inflation_Outside_Start
             // 
@@ -739,6 +745,7 @@ namespace mass_groundstation
             this.button_Inflation_Outside_Start.TabIndex = 5;
             this.button_Inflation_Outside_Start.Text = "Inflation Start Outside";
             this.button_Inflation_Outside_Start.UseVisualStyleBackColor = true;
+            this.button_Inflation_Outside_Start.Click += new System.EventHandler(this.button_Inflation_Outside_Start_Click);
             // 
             // button_Inflation_Inside_Start
             // 
@@ -749,6 +756,7 @@ namespace mass_groundstation
             this.button_Inflation_Inside_Start.TabIndex = 4;
             this.button_Inflation_Inside_Start.Text = "Inflation Start Inside";
             this.button_Inflation_Inside_Start.UseVisualStyleBackColor = true;
+            this.button_Inflation_Inside_Start.Click += new System.EventHandler(this.button_Inflation_Inside_Start_Click);
             // 
             // groupBox7
             // 
@@ -779,7 +787,6 @@ namespace mass_groundstation
             this.label_status_UV_ST2.Size = new System.Drawing.Size(33, 15);
             this.label_status_UV_ST2.TabIndex = 10;
             this.label_status_UV_ST2.Text = "OFF";
-            this.label_status_UV_ST2.Click += new System.EventHandler(this.label21_Click);
             // 
             // label_status_UV_ST1
             // 
@@ -791,7 +798,6 @@ namespace mass_groundstation
             this.label_status_UV_ST1.Size = new System.Drawing.Size(33, 15);
             this.label_status_UV_ST1.TabIndex = 9;
             this.label_status_UV_ST1.Text = "OFF";
-            this.label_status_UV_ST1.Click += new System.EventHandler(this.label20_Click);
             // 
             // label19
             // 
@@ -846,6 +852,7 @@ namespace mass_groundstation
             this.button_UV_ST2_OFF.TabIndex = 4;
             this.button_UV_ST2_OFF.Text = "UV - OFF Structure 2";
             this.button_UV_ST2_OFF.UseVisualStyleBackColor = true;
+            this.button_UV_ST2_OFF.Click += new System.EventHandler(this.button_UV_ST2_OFF_Click);
             // 
             // button_UV_ST1_OFF
             // 
@@ -856,6 +863,7 @@ namespace mass_groundstation
             this.button_UV_ST1_OFF.TabIndex = 3;
             this.button_UV_ST1_OFF.Text = "UV - OFF Structure 1";
             this.button_UV_ST1_OFF.UseVisualStyleBackColor = true;
+            this.button_UV_ST1_OFF.Click += new System.EventHandler(this.button_UV_ST1_OFF_Click);
             // 
             // button_UV_ST2_ON
             // 
@@ -866,6 +874,7 @@ namespace mass_groundstation
             this.button_UV_ST2_ON.TabIndex = 2;
             this.button_UV_ST2_ON.Text = "UV - ON Structure 2";
             this.button_UV_ST2_ON.UseVisualStyleBackColor = true;
+            this.button_UV_ST2_ON.Click += new System.EventHandler(this.button_UV_ST2_ON_Click);
             // 
             // button_UV_ST1_ON
             // 
@@ -876,6 +885,7 @@ namespace mass_groundstation
             this.button_UV_ST1_ON.TabIndex = 1;
             this.button_UV_ST1_ON.Text = "UV - ON Structure 1";
             this.button_UV_ST1_ON.UseVisualStyleBackColor = true;
+            this.button_UV_ST1_ON.Click += new System.EventHandler(this.button_UV_ST1_ON_Click);
             // 
             // groupBox6
             // 
@@ -925,6 +935,7 @@ namespace mass_groundstation
             this.button_HDRM_Outside_Release.TabIndex = 1;
             this.button_HDRM_Outside_Release.Text = "Release HDRM Outside";
             this.button_HDRM_Outside_Release.UseVisualStyleBackColor = true;
+            this.button_HDRM_Outside_Release.Click += new System.EventHandler(this.button_HDRM_Outside_Release_Click);
             // 
             // button_HDRM_Inside_Release
             // 
@@ -935,6 +946,7 @@ namespace mass_groundstation
             this.button_HDRM_Inside_Release.TabIndex = 0;
             this.button_HDRM_Inside_Release.Text = "Release HDRM Inside";
             this.button_HDRM_Inside_Release.UseVisualStyleBackColor = true;
+            this.button_HDRM_Inside_Release.Click += new System.EventHandler(this.button_HDRM_Inside_Release_Click);
             // 
             // groupBox8
             // 
@@ -1070,6 +1082,10 @@ namespace mass_groundstation
             // groupBox5
             // 
             this.groupBox5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox5.Controls.Add(this.label17);
+            this.groupBox5.Controls.Add(this.label15);
+            this.groupBox5.Controls.Add(this.label13);
+            this.groupBox5.Controls.Add(this.label10);
             this.groupBox5.Controls.Add(this.button_valve_ambient_inside);
             this.groupBox5.Controls.Add(this.button_valve_ambient_outside);
             this.groupBox5.Controls.Add(this.button_valve_pressure_outside);
@@ -1101,6 +1117,42 @@ namespace mass_groundstation
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Pneumatics Overview";
             // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(576, 178);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(13, 13);
+            this.label17.TabIndex = 25;
+            this.label17.Text = "4";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(447, 302);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(13, 13);
+            this.label15.TabIndex = 24;
+            this.label15.Text = "3";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(576, 535);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(13, 13);
+            this.label13.TabIndex = 23;
+            this.label13.Text = "2";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(447, 659);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(13, 13);
+            this.label10.TabIndex = 22;
+            this.label10.Text = "1";
+            // 
             // button_valve_ambient_inside
             // 
             this.button_valve_ambient_inside.Enabled = false;
@@ -1110,6 +1162,7 @@ namespace mass_groundstation
             this.button_valve_ambient_inside.TabIndex = 21;
             this.button_valve_ambient_inside.Text = "Change Status";
             this.button_valve_ambient_inside.UseVisualStyleBackColor = true;
+            this.button_valve_ambient_inside.Click += new System.EventHandler(this.button_valve_ambient_inside_Click);
             // 
             // button_valve_ambient_outside
             // 
@@ -1120,6 +1173,7 @@ namespace mass_groundstation
             this.button_valve_ambient_outside.TabIndex = 20;
             this.button_valve_ambient_outside.Text = "Change Status";
             this.button_valve_ambient_outside.UseVisualStyleBackColor = true;
+            this.button_valve_ambient_outside.Click += new System.EventHandler(this.button_valve_ambient_outside_Click);
             // 
             // button_valve_pressure_outside
             // 
@@ -1130,6 +1184,7 @@ namespace mass_groundstation
             this.button_valve_pressure_outside.TabIndex = 20;
             this.button_valve_pressure_outside.Text = "Change Status";
             this.button_valve_pressure_outside.UseVisualStyleBackColor = true;
+            this.button_valve_pressure_outside.Click += new System.EventHandler(this.button_valve_pressure_outside_Click);
             // 
             // button_valve_pressure_inside
             // 
@@ -1140,6 +1195,7 @@ namespace mass_groundstation
             this.button_valve_pressure_inside.TabIndex = 19;
             this.button_valve_pressure_inside.Text = "Change Status";
             this.button_valve_pressure_inside.UseVisualStyleBackColor = true;
+            this.button_valve_pressure_inside.Click += new System.EventHandler(this.button_valve_pressure_inside_Click);
             // 
             // checkBox_pneu_manual_override
             // 
@@ -1315,7 +1371,6 @@ namespace mass_groundstation
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox2.TabIndex = 0;
             this.pictureBox2.TabStop = false;
-            this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
             // 
             // tab_Ambient_Conditions
             // 
@@ -1344,17 +1399,17 @@ namespace mass_groundstation
             // 
             // chart_pressure
             // 
-            chartArea5.Name = "ChartArea1";
-            this.chart_pressure.ChartAreas.Add(chartArea5);
+            chartArea7.Name = "ChartArea1";
+            this.chart_pressure.ChartAreas.Add(chartArea7);
             this.chart_pressure.Location = new System.Drawing.Point(6, 43);
             this.chart_pressure.Name = "chart_pressure";
             this.chart_pressure.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.None;
             this.chart_pressure.PaletteCustomColors = new System.Drawing.Color[] {
         System.Drawing.Color.Black};
-            series7.ChartArea = "ChartArea1";
-            series7.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series7.Name = "Pressure";
-            this.chart_pressure.Series.Add(series7);
+            series10.ChartArea = "ChartArea1";
+            series10.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series10.Name = "Pressure";
+            this.chart_pressure.Series.Add(series10);
             this.chart_pressure.Size = new System.Drawing.Size(734, 717);
             this.chart_pressure.TabIndex = 4;
             this.chart_pressure.Text = "chart2";
@@ -1409,22 +1464,22 @@ namespace mass_groundstation
             // 
             // chart_temperature
             // 
-            chartArea6.BorderColor = System.Drawing.Color.DarkGray;
-            chartArea6.Name = "ChartArea1";
-            this.chart_temperature.ChartAreas.Add(chartArea6);
+            chartArea8.BorderColor = System.Drawing.Color.DarkGray;
+            chartArea8.Name = "ChartArea1";
+            this.chart_temperature.ChartAreas.Add(chartArea8);
             this.chart_temperature.Location = new System.Drawing.Point(6, 43);
             this.chart_temperature.Name = "chart_temperature";
             this.chart_temperature.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.None;
             this.chart_temperature.PaletteCustomColors = new System.Drawing.Color[] {
         System.Drawing.Color.Black};
-            series8.ChartArea = "ChartArea1";
-            series8.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series8.Name = "Temperature_Inside";
-            series9.ChartArea = "ChartArea1";
-            series9.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series9.Name = "Temperature_Outside";
-            this.chart_temperature.Series.Add(series8);
-            this.chart_temperature.Series.Add(series9);
+            series11.ChartArea = "ChartArea1";
+            series11.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series11.Name = "Temperature_Inside";
+            series12.ChartArea = "ChartArea1";
+            series12.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series12.Name = "Temperature_Outside";
+            this.chart_temperature.Series.Add(series11);
+            this.chart_temperature.Series.Add(series12);
             this.chart_temperature.Size = new System.Drawing.Size(728, 717);
             this.chart_temperature.TabIndex = 3;
             this.chart_temperature.Text = "chart1";
@@ -1620,6 +1675,10 @@ namespace mass_groundstation
         private System.Windows.Forms.Button button_valve_pressure_outside;
         private System.Windows.Forms.Button button_valve_pressure_inside;
         private System.Windows.Forms.CheckBox checkBox_pneu_manual_override;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label10;
     }
 }
 
