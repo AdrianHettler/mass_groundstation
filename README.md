@@ -8,6 +8,7 @@ More info about the experiment on: http://www.mass-bexus.eu/
 
 # On-Board Computer
 
+# Electrical Components
 
 # About BEXUS
 The REXUS/BEXUS programme was created in 2007 thanks to the cooperation of DLR and SNSB (now SNSA). Today the programme allow students from Universities and higher education colleges across Europe to develop their own experiments on different research areas such as atmospheric research, fluid physics, magnetic field, materials science, radiations physics, astrophysics, biology and also on technology demonstrators.
