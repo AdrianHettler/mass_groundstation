@@ -1,6 +1,6 @@
 # Project MASS
 
-Project MASS is a Experiment by six aerospace engineering students of the Munich University of Applied Sciences. The goal is to inflate and rigidize resin soaked fibre structures on board a high altitude balloon. The MASS Experiment will launch in October 2021 onboard BEXUS 31.
+Project MASS is a Experiment by six aerospace engineering students of the Munich University of Applied Sciences. The goal is to inflate and rigidize resin soaked fibre structures on board a high altitude balloon. The MASS Experiment will launch in October 2021 on board BEXUS 31.
 
 More info about the experiment on: http://www.mass-bexus.eu/
 
@@ -10,6 +10,6 @@ More info about the experiment on: http://www.mass-bexus.eu/
 
 
 # About BEXUS
-The REXUS/BEXUS programme is realised under a bilateral Agency Agreement between the German Aerospace Center (DLR) and the Swedish National Space Agency (SNSA). The Swedish share of the payload has been made available to students from other European countries through a collaboration with the European Space Agency (ESA). EuroLaunch, a cooperation between the Esrange Space Center of SSC and the Mobile Rocket Base (MORABA) of DLR, is responsible for the campaign management and operations of the launch vehicles. Experts from DLR, SSC, ZARM and ESA provide technical support to the student teams throughout the project. REXUS and BEXUS are launched from SSC, Esrange Space Center in northern Sweden.
+The REXUS/BEXUS programme was created in 2007 thanks to the cooperation of DLR and SNSB (now SNSA). Today the programme allow students from Universities and higher education colleges across Europe to develop their own experiments on different research areas such as atmospheric research, fluid physics, magnetic field, materials science, radiations physics, astrophysics, biology and also on technology demonstrators.
 
 http://rexusbexus.net/bexus/
