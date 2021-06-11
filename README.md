@@ -9,6 +9,8 @@ https://github.com/AdrianHettler/mass_groundstation
 # On-Board Computer
 
 # Electrical Components
+![alt text](https://i.imgur.com/1H9CYIi.jpg)
+
 
 # About BEXUS
 The REXUS/BEXUS programme was created in 2007 thanks to the cooperation of DLR and SNSB (now SNSA). Today the programme allow students from Universities and higher education colleges across Europe to develop their own experiments on different research areas such as atmospheric research, fluid physics, magnetic field, materials science, radiations physics, astrophysics, biology and also on technology demonstrators.
