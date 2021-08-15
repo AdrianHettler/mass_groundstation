@@ -16,7 +16,6 @@ using System.Runtime.InteropServices;
 
 namespace mass_groundstation
 {
-
     public struct tcp_command
     {
         public int message_id;
@@ -27,7 +26,7 @@ namespace mass_groundstation
 
 
     public partial class MainForm : Form
-    {
+    {    
         public static NetworkStream tcp_stream;
         public static TcpClient tcp_client;
         private bool tcp_connected = false;
@@ -36,8 +35,9 @@ namespace mass_groundstation
         IPEndPoint udp_endpoint;
 
         List<tcp_command> tcp_command_list = new List<tcp_command>();
+        DirectBitmap frame_bmp = new DirectBitmap(800, 612);
 
-
+        public static MemoryStream picture_mem_stream = new MemoryStream();
         bool valve_1 = false, valve_2 = false, valve_3 = false, valve_4 = false;
         DateTime init_time = DateTime.Now;
         DateTime empty_dt = new DateTime();
@@ -350,11 +350,67 @@ namespace mass_groundstation
             }
         }
 
+        protected bool SaveData(string FileName, byte[] Data)
+        {
+            BinaryWriter Writer = null;
+            string Name = @"C:\yourfile11.name";
+
+            try
+            {
+                // Create a new stream to write to the file
+                Writer = new BinaryWriter(File.OpenWrite(Name));
+
+                // Writer raw data                
+                Writer.Write(Data);
+                Writer.Flush();
+                Writer.Close();
+            }
+            catch
+            {
+                //...
+                return false;
+            }
+
+            return true;
+        }
+
+        public static void AppendAllBytes(string path, byte[] bytes)
+        {
+            //argument-checking here.
+
+            using (var stream = new FileStream(path, FileMode.Append))
+            {
+                stream.Write(bytes, 0, bytes.Length);
+            }
+        }
+        public static void SaveByteArryToJpeg(string imagePath, Byte[] data, int width, int height)
+        {
+            if (width * height != data.Length)
+                throw new FormatException("Size does not match");
+
+            Bitmap bmp = new Bitmap(width, height);
+
+            for (int r = 0; r < height; r++)
+            {
+                for (int c = 0; c < width; c++)
+                {
+                    Byte value = data[r * width + c];
+                    bmp.SetPixel(c, r, Color.FromArgb(value, value, value));
+                }
+            }
+
+            bmp.Save(imagePath, System.Drawing.Imaging.ImageFormat.Jpeg);
+        }
+
+
+        public static Int32 pixel_count = 0;
+
         public void udp_server_thread()
         {
             udp_client = new UdpClient((int)numericUpDown_UDP_PORT.Value);
             udp_endpoint = new IPEndPoint(IPAddress.Parse(textBox_EXP_IP.Text), 0);
-
+            List<byte> list = new List<byte>();
+            int i = 0;
             while (true)
             {
                 try
@@ -362,63 +418,86 @@ namespace mass_groundstation
                     Byte[] received_bytes = udp_client.Receive(ref udp_endpoint);
                     //string returnData = Encoding.ASCII.GetString(receiveBytes);
 
-                    switch (received_bytes[0])
+                    Byte[] arr = received_bytes.Skip(3).ToArray();
+
+                        AppendAllBytes(@"C:\\pics\\pic.name", arr);
+
+
+
+                    frame_bmp.SetLine(BitConverter.ToUInt16(received_bytes, 1), arr);
+
+
+                    if (BitConverter.ToUInt16(received_bytes,1) == 305)
                     {
-                        case message_ids.DATA_ENVIROMENTAL:
-                            float ambient_temp_inside = BitConverter.ToSingle(received_bytes, 1);
-
-                            TimeSpan time = DateTime.Now - init_time;                          
-
-                            float ambient_temp_outside = BitConverter.ToSingle(received_bytes, 5);
-                            float ambient_pressure = BitConverter.ToSingle(received_bytes, 9);
-
-                            OutputTextBox.Invoke((MethodInvoker)delegate
-                            {
-                                textBox_current_ambient_temperature_inside.Text = ambient_temp_inside.ToString() + " °C";
-                                textBox_current_ambient_temperature_outside.Text = ambient_temp_outside.ToString() + " °C";
-                                textBox_current_ambient_pressure.Text = ambient_pressure.ToString() + " hPa";
-                                this.chart_temperature.Series["Temperature_Inside"].Points.AddXY(empty_dt + time, ambient_temp_inside);
-                                this.chart_pressure.Series["Pressure"].Points.AddXY(empty_dt + time, ambient_pressure);
-                            });
-
-                            break;
-
-                        case message_ids.DATA_POWER:
-                            float voltage_bexus = BitConverter.ToSingle(received_bytes, 1);
-                            float voltage_extra = BitConverter.ToSingle(received_bytes, 5);
-                            float current_bexus = BitConverter.ToSingle(received_bytes, 9);
-                            float current_extra = BitConverter.ToSingle(received_bytes, 13);
-                            float power_bexus = voltage_bexus * current_bexus;
-                            float power_extra = voltage_extra * current_extra;
-
-                            OutputTextBox.Invoke((MethodInvoker)delegate
-                            {
-                                textBox_BEXUS_Voltage.Text = voltage_bexus.ToString() + " V";
-                                textBox_EXTRA_Voltage.Text = voltage_extra.ToString() + " V";
-                                textBox_BEXUS_Current.Text = current_bexus.ToString() + " A";
-                                textBox_EXTRA_Current.Text = current_extra.ToString() + " A";
-                                textBox_BEXUS_Power.Text = power_bexus.ToString() + " W";
-                                textBox_EXTRA_Power.Text = power_extra.ToString() + " W";
-
-                            });
-
-                            break;
-
-                        case message_ids.DATA_PNEUMATICS:
-
-                            float pressure_tank = BitConverter.ToSingle(received_bytes, 1);
-                            float pressure_outside_structures = BitConverter.ToSingle(received_bytes, 5);
-                            float pressure_inside_structures = BitConverter.ToSingle(received_bytes, 9);
-
-                            OutputTextBox.Invoke((MethodInvoker)delegate
-                            {
-                                textBox_PNEU_Tank.Text = pressure_tank.ToString() + " hPa";
-                                textBox_PNEU_Outside_Structures.Text = pressure_outside_structures.ToString() + " hPa";
-                                textBox_PNEU_Inside_Structures.Text = pressure_inside_structures.ToString() + " hPa";
-                            });
-
-                            break;
+                        pictureBox.Invoke((MethodInvoker)delegate
+                        {
+                            pictureBox.Image = frame_bmp.Bitmap;
+                        });
+                        
                     }
+
+
+
+
+
+
+                    //switch (received_bytes[0])
+                    //{
+                    //    case message_ids.DATA_ENVIROMENTAL:
+                    //        float ambient_temp_inside = BitConverter.ToSingle(received_bytes, 1);
+
+                    //        TimeSpan time = DateTime.Now - init_time;
+
+                    //        float ambient_temp_outside = BitConverter.ToSingle(received_bytes, 5);
+                    //        float ambient_pressure = BitConverter.ToSingle(received_bytes, 9);
+
+                    //        OutputTextBox.Invoke((MethodInvoker)delegate
+                    //        {
+                    //            textBox_current_ambient_temperature_inside.Text = ambient_temp_inside.ToString() + " °C";
+                    //            textBox_current_ambient_temperature_outside.Text = ambient_temp_outside.ToString() + " °C";
+                    //            textBox_current_ambient_pressure.Text = ambient_pressure.ToString() + " hPa";
+                    //            this.chart_temperature.Series["Temperature_Inside"].Points.AddXY(empty_dt + time, ambient_temp_inside);
+                    //            this.chart_pressure.Series["Pressure"].Points.AddXY(empty_dt + time, ambient_pressure);
+                    //        });
+
+                    //        break;
+
+                    //    case message_ids.DATA_POWER:
+                    //        float voltage_bexus = BitConverter.ToSingle(received_bytes, 1);
+                    //        float voltage_extra = BitConverter.ToSingle(received_bytes, 5);
+                    //        float current_bexus = BitConverter.ToSingle(received_bytes, 9);
+                    //        float current_extra = BitConverter.ToSingle(received_bytes, 13);
+                    //        float power_bexus = voltage_bexus * current_bexus;
+                    //        float power_extra = voltage_extra * current_extra;
+
+                    //        OutputTextBox.Invoke((MethodInvoker)delegate
+                    //        {
+                    //            textBox_BEXUS_Voltage.Text = voltage_bexus.ToString() + " V";
+                    //            textBox_EXTRA_Voltage.Text = voltage_extra.ToString() + " V";
+                    //            textBox_BEXUS_Current.Text = current_bexus.ToString() + " A";
+                    //            textBox_EXTRA_Current.Text = current_extra.ToString() + " A";
+                    //            textBox_BEXUS_Power.Text = power_bexus.ToString() + " W";
+                    //            textBox_EXTRA_Power.Text = power_extra.ToString() + " W";
+
+                    //        });
+
+                    //        break;
+
+                    //    case message_ids.DATA_PNEUMATICS:
+
+                    //        float pressure_tank = BitConverter.ToSingle(received_bytes, 1);
+                    //        float pressure_outside_structures = BitConverter.ToSingle(received_bytes, 5);
+                    //        float pressure_inside_structures = BitConverter.ToSingle(received_bytes, 9);
+
+                    //        OutputTextBox.Invoke((MethodInvoker)delegate
+                    //        {
+                    //            textBox_PNEU_Tank.Text = pressure_tank.ToString() + " hPa";
+                    //            textBox_PNEU_Outside_Structures.Text = pressure_outside_structures.ToString() + " hPa";
+                    //            textBox_PNEU_Inside_Structures.Text = pressure_inside_structures.ToString() + " hPa";
+                    //        });
+
+                    //        break;
+                    //}
                 }
                 catch (Exception except)
                 {
@@ -808,6 +887,16 @@ namespace mass_groundstation
             command.data[0] = 2;
             command.data_size = 1;
             tcp_command_list.Add(command);
+        }
+
+        private void pictureBox4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+
         }
 
         private void button_UV_ST1_OFF_Click(object sender, EventArgs e)

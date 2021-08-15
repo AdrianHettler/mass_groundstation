@@ -32,11 +32,11 @@ namespace mass_groundstation
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea7 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series10 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea8 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series11 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series12 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.fontDialog1 = new System.Windows.Forms.FontDialog();
             this.StatusBar = new System.Windows.Forms.StatusStrip();
             this.OutputTextBox = new System.Windows.Forms.RichTextBox();
@@ -65,6 +65,7 @@ namespace mass_groundstation
             this.label_GS_IP = new System.Windows.Forms.Label();
             this.label_EXP_IP = new System.Windows.Forms.Label();
             this.Tab_Camera = new System.Windows.Forms.TabPage();
+            this.pictureBox = new System.Windows.Forms.PictureBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.checkBox_CAM2_LOCK = new System.Windows.Forms.CheckBox();
             this.button_CAM2_STOP = new System.Windows.Forms.Button();
@@ -162,6 +163,7 @@ namespace mass_groundstation
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_TCP_PORT)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_UDP_PORT)).BeginInit();
             this.Tab_Camera.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.Tab_Experiment.SuspendLayout();
@@ -507,6 +509,7 @@ namespace mass_groundstation
             // 
             // Tab_Camera
             // 
+            this.Tab_Camera.Controls.Add(this.pictureBox);
             this.Tab_Camera.Controls.Add(this.groupBox2);
             this.Tab_Camera.Controls.Add(this.groupBox1);
             this.Tab_Camera.Location = new System.Drawing.Point(4, 22);
@@ -516,6 +519,16 @@ namespace mass_groundstation
             this.Tab_Camera.TabIndex = 2;
             this.Tab_Camera.Text = "Camera";
             this.Tab_Camera.UseVisualStyleBackColor = true;
+            // 
+            // pictureBox
+            // 
+            this.pictureBox.Location = new System.Drawing.Point(6, 84);
+            this.pictureBox.Name = "pictureBox";
+            this.pictureBox.Size = new System.Drawing.Size(1493, 682);
+            this.pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox.TabIndex = 2;
+            this.pictureBox.TabStop = false;
+            this.pictureBox.Click += new System.EventHandler(this.pictureBox4_Click);
             // 
             // groupBox2
             // 
@@ -1399,17 +1412,17 @@ namespace mass_groundstation
             // 
             // chart_pressure
             // 
-            chartArea7.Name = "ChartArea1";
-            this.chart_pressure.ChartAreas.Add(chartArea7);
+            chartArea1.Name = "ChartArea1";
+            this.chart_pressure.ChartAreas.Add(chartArea1);
             this.chart_pressure.Location = new System.Drawing.Point(6, 43);
             this.chart_pressure.Name = "chart_pressure";
             this.chart_pressure.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.None;
             this.chart_pressure.PaletteCustomColors = new System.Drawing.Color[] {
         System.Drawing.Color.Black};
-            series10.ChartArea = "ChartArea1";
-            series10.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series10.Name = "Pressure";
-            this.chart_pressure.Series.Add(series10);
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series1.Name = "Pressure";
+            this.chart_pressure.Series.Add(series1);
             this.chart_pressure.Size = new System.Drawing.Size(734, 717);
             this.chart_pressure.TabIndex = 4;
             this.chart_pressure.Text = "chart2";
@@ -1464,22 +1477,22 @@ namespace mass_groundstation
             // 
             // chart_temperature
             // 
-            chartArea8.BorderColor = System.Drawing.Color.DarkGray;
-            chartArea8.Name = "ChartArea1";
-            this.chart_temperature.ChartAreas.Add(chartArea8);
+            chartArea2.BorderColor = System.Drawing.Color.DarkGray;
+            chartArea2.Name = "ChartArea1";
+            this.chart_temperature.ChartAreas.Add(chartArea2);
             this.chart_temperature.Location = new System.Drawing.Point(6, 43);
             this.chart_temperature.Name = "chart_temperature";
             this.chart_temperature.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.None;
             this.chart_temperature.PaletteCustomColors = new System.Drawing.Color[] {
         System.Drawing.Color.Black};
-            series11.ChartArea = "ChartArea1";
-            series11.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series11.Name = "Temperature_Inside";
-            series12.ChartArea = "ChartArea1";
-            series12.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series12.Name = "Temperature_Outside";
-            this.chart_temperature.Series.Add(series11);
-            this.chart_temperature.Series.Add(series12);
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series2.Name = "Temperature_Inside";
+            series3.ChartArea = "ChartArea1";
+            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series3.Name = "Temperature_Outside";
+            this.chart_temperature.Series.Add(series2);
+            this.chart_temperature.Series.Add(series3);
             this.chart_temperature.Size = new System.Drawing.Size(728, 717);
             this.chart_temperature.TabIndex = 3;
             this.chart_temperature.Text = "chart1";
@@ -1520,6 +1533,7 @@ namespace mass_groundstation
             this.MinimizeBox = false;
             this.Name = "MainForm";
             this.Text = "MASS Groundstation";
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.TabControl.ResumeLayout(false);
             this.Tab_Logs.ResumeLayout(false);
             this.Tab_Logs.PerformLayout();
@@ -1529,6 +1543,7 @@ namespace mass_groundstation
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_TCP_PORT)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_UDP_PORT)).EndInit();
             this.Tab_Camera.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
@@ -1679,6 +1694,7 @@ namespace mass_groundstation
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label10;
+        public System.Windows.Forms.PictureBox pictureBox;
     }
 }
 
